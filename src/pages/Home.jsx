@@ -17,6 +17,7 @@ import Col from "react-bootstrap/esm/Col";
 
 // App praises
 const praises = [
+  "faster",
   "easier",
   "better",
   "enjoyable",
@@ -45,7 +46,7 @@ const Home = () => {
     <Container
       className="heroimage-background"
       style={{
-        backgroundImage: "url(/src/assets/hero.jpg)",
+        backgroundImage: "url(/src/assets/hero.jpg)", // đường dẫn tới file hình ảnh
         backgroundPosition: "center center",
         backgroundSize: "100%",
         maxWidth: 100 + "%",
@@ -79,11 +80,11 @@ const Home = () => {
                   className="mb-3"
                   style={{
                     fontFamily: '"Montserrat", sans-serif',
-                    fontWeight: 400,
+                    fontWeight: 300,
                     fontSize: 50 + "px",
                   }}
                 >
-                  Make teamwork{" "}
+                  Make potted plant management{" "}
                   <ReactTyped
                     backSpeed={50}
                     strings={praises}
@@ -101,15 +102,15 @@ const Home = () => {
                   Everything is possible with{" "}
                   {import.meta.env.VITE_APPLICATION_NAME}
                 </h5>
-                <a
+                {/* <a
                   className="btn btn-outline-light btn-lg"
                   href="/features"
                   role="button"
                 >
                   Find out more
-                </a>
+                </a> */}
               </div>
-              <div
+              {/* <div
                 className="d-flex justify-content-center"
                 style={{ marginTop: 100 + "px" }}
               >
@@ -170,9 +171,9 @@ const Home = () => {
                     </Row>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
-            <div
+            {/* <div
               className="flex-shrink-0-demo-part"
               style={{
                 width: 40 + "%",
@@ -260,8 +261,8 @@ const Home = () => {
                       ></i>{" "}
                       {itemData
                         ? data[itemData.dataIndex].label +
-                          ": " +
-                          data[itemData.dataIndex].value
+                        ": " +
+                        data[itemData.dataIndex].value
                         : "Select a section..."}
                     </div>
                   </div>
@@ -523,7 +524,7 @@ const Home = () => {
                   </div>
                 </div>
               </Row>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

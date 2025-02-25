@@ -130,6 +130,8 @@ export const UserauthProvider = () => {
       re_password: e.target.re_password.value,
     };
 
+    console.log(body);
+
     const response = await axios.post(
       import.meta.env.VITE_BACKEND_SIGNUP_ENDPOINT,
       body,
@@ -147,6 +149,7 @@ export const UserauthProvider = () => {
       );
       navigate("/login");
     } else {
+      console.log(response);
       throw e;
     }
   };

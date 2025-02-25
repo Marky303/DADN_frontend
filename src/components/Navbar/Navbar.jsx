@@ -67,24 +67,24 @@ const NavbarComponent = () => {
             <Nav.Link className="navlink-dashboard" href="/">
               Dashboard
             </Nav.Link>
-            <Nav.Link className="navlink-search" href="/search">
-              Search
+            <Nav.Link className="navlink-plants" href="/plants">
+              Plants
             </Nav.Link>
-            <Nav.Link className="navlink-dispatch" href="/dispatch">
-              Dispatch
+            <Nav.Link className="navlink-plans" href="/plans">
+              Plans
             </Nav.Link>
+            {/* <Nav.Link className="navlink-info" href="/info">
+              Infomation
+            </Nav.Link> */}
           </Nav>
         ) : (
           <Nav className="me-auto">
-            <Nav.Link className="navlink-home" href="/">
+            {/* <Nav.Link className="navlink-home" href="/">
               Home
-            </Nav.Link>
-            <Nav.Link className="navlink-features" href="/features">
+            </Nav.Link> */}
+            {/* <Nav.Link className="navlink-features" href="/features">
               Features
-            </Nav.Link>
-            <Nav.Link className="navlink-pricing" href="/pricing">
-              Pricing
-            </Nav.Link>
+            </Nav.Link> */}
           </Nav>
         )}
         <Navbar.Toggle />
@@ -93,7 +93,7 @@ const NavbarComponent = () => {
             <DropdownButton
               as={ButtonGroup}
               variant={"primary"}
-              title={"Mark Stanley"}
+              title={"Account"}
               style={{
                 width: 10 + "rem",
                 borderWidth: 1 + "px",
@@ -101,7 +101,7 @@ const NavbarComponent = () => {
                 backgroundColor: "gre",
               }}
             >
-              <Dropdown.Item href="/account" eventKey="1">
+              <Dropdown.Item href="/info" eventKey="1">
                 Account
               </Dropdown.Item>
               <Dropdown.Item

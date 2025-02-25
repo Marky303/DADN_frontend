@@ -24,7 +24,10 @@ import Activate from "./pages/Auth/Activate";
 
 // Import main pages
 import Dashboard from "./pages/Main/Dashboard";
-import Search from "./pages/Main/Search";
+import Plants from "./pages/Main/Plants";
+import Plans from "./pages/Main/Plans";
+import Info from "./pages/Main/Info";
+import PlantInfo from "./pages/Main/PlantInfo";
 
 // Import special pages
 import PageNotFound from "./pages/Error/PageNotFound";
@@ -47,7 +50,10 @@ const App = () => (
 
             <Route exact path="/" element={<ChatBubbleLayout />}>
               <Route exact path="/dashboard" element={<Dashboard />} />
-              <Route exact path="/search" element={<Search />} />
+              <Route exact path="/plants" element={<Plants />} />
+              <Route exact path="/plans" element={<Plans />} />
+              <Route exact path="/info" element={<Info />} />
+              <Route path="/plants/:plantID" element={<PlantInfo />} />
             </Route>
           </Route>
         </Route>

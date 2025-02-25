@@ -10,7 +10,7 @@ import AuthContext from "../../context/UserauthContext";
 const Login = () => {
   let { sendRequest, loading } = useContext(AuthContext);
 
-  useEffect(() => {}, [loading]);
+  useEffect(() => { }, [loading]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
