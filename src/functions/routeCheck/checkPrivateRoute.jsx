@@ -1,20 +1,18 @@
-// Declare private and public route groups
-const publicRoutes = ["/", "/features", "/pricing", "/login", "/signup"];
-const privateRoutes = ["/dashboard", "/search"];
-
 export default function checkPrivateRoute(link) {
-  const publicRegex = new RegExp(
-    `^(${publicRoutes.map((route) => route.replace("/", "\\/")).join("|")})$`
-  );
-  const privateRegex = new RegExp(
-    `^(${privateRoutes.map((route) => route.replace("/", "\\/")).join("|")})$`
-  );
+  const publicRoutes = ["/", "/login", "/signup"];
+  const privateRoutes = ["/dashboard", "/plants", "/plans", "/info", "/plants/:plantID"];
 
-  if (publicRegex.test(link)) {
+  // Xử lý dynamic routes
+  const matchDynamicRoute = (route, path) => {
+    const regex = new RegExp(`^${route.replace(/:[^\s/]+/g, "([^/]+)")}$`);
+    return regex.test(path);
+  };
+
+  if (publicRoutes.includes(link)) {
     return "public";
-  } else if (privateRegex.test(link)) {
+  } else if (privateRoutes.some((route) => matchDynamicRoute(route, link))) {
     return "private";
   } else {
-    return "nuh uh";
+    return "unknown"; // Route không hợp lệ
   }
 }

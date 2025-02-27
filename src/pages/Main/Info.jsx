@@ -16,7 +16,7 @@ const PersonalInfo = () => {
     });
 
     return (
-        <div className="container rounded bg-white mt-5 mb-5 p-4 shadow" style={{ maxHeight: "80vh", overflowY: "auto" }}>
+        <div className="container rounded bg-white mt-5 mb-5 p-4 shadow" style={{ maxHeight: "80vh", overflowY: "auto", background: "linear-gradient(to right, #E0FFFF, #87CEFA)"  }}>
             <div className="row">
                 {/* Profile Image Column */}
                 <div className="col-md-3 border-end d-flex flex-column align-items-center text-center p-4 profile-image-container">

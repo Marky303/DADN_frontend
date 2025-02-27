@@ -15,10 +15,9 @@ import AuthContext from "../../context/UserauthContext";
 // Route -> Nav link highlight dictionary
 const dict = {
   "/": "navlink-home",
-  "/features": "navlink-features",
-  "/pricing": "navlink-pricing",
   "/dashboard": "navlink-dashboard",
-  "/search": "navlink-search",
+  "/plants": "navlink-plants",
+  "/plans": "navlink-plans",
 };
 
 const NavbarComponent = () => {
