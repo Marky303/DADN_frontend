@@ -8,7 +8,9 @@ body {
     overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
 }
 
-
+.profile-image-container img {
+    margin-bottom: 50px; /* Tạo khoảng cách */
+}
 
 .profile-button {
     background: rgb(13, 110, 253);

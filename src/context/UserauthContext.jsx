@@ -36,8 +36,10 @@ export const UserauthProvider = () => {
   // FUNCTIONS
   const sendRequest = async (e, requestType) => {
     setLoading(true);
+    console.log("Request type: " + requestType);
 
     try {
+      let response = null;
       switch (requestType) {
         case "login":
           await login(e);
@@ -48,15 +50,25 @@ export const UserauthProvider = () => {
         case "activate":
           await activate(e);
           break;
+        case "info":
+          response = await info(e); // Lấy dữ liệu từ API
+          break;
+        case "update_info_user":
+          response = await update_info_user(e);
+          break;
         default:
-          throw "Request type undefined";
+          throw new Error("Request type undefined");
       }
+
+      setLoading(false);
+      return response; // ✅ Trả về dữ liệu API cho `Info.jsx`
     } catch (error) {
       handleError(error);
+      setLoading(false);
+      return null;
     }
-
-    setLoading(false);
   };
+
 
   const handleError = (error) => {
     if (error.response) {
@@ -98,6 +110,8 @@ export const UserauthProvider = () => {
     );
 
     if (response && response.status == 200) {
+      console.log("access token: " + response.data.access);
+      console.log("refresh token: " + response.data.refresh);
       setAccessToken(response.data.access);
       setRefreshToken(response.data.refresh);
 
@@ -124,8 +138,11 @@ export const UserauthProvider = () => {
 
   const signup = async (e) => {
     const body = {
-      name: e.target.name.value,
+      Name: e.target.name.value,
       email: e.target.email.value,
+      PhoneNumber: e.target.phone_number.value,
+      DateOfBirth: e.target.date_of_birth.value,
+      Gender: e.target.gender.value,
       password: e.target.password.value,
       re_password: e.target.re_password.value,
     };
@@ -153,6 +170,52 @@ export const UserauthProvider = () => {
       throw e;
     }
   };
+
+  const info = async (e) => {
+    const response = await axios.get(import.meta.env.VITE_BACKEND_USER_INFO_ENDPOINT, {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    });
+
+    if (response && response.status == 200) {
+      console.log(response.data);
+      return response.data; // ✅ Trả về dữ liệu user từ API
+    } else {
+      throw e;
+    }
+  };
+
+  const update_info_user = async (e) => {
+    console.log("Updating user info...");
+    const body = {
+      Name: e.name,
+      PhoneNumber: e.phone,
+      DateOfBirth: e.dob,
+      Gender: e.gender,
+      Address: e.address,
+    };
+    console.log(body);
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_USER_UPDATE_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", "User info updated!");
+      return response.data;
+    } else {
+      throw e;
+    }
+  };
+
+
 
   const activate = async (e) => {
     const body = {

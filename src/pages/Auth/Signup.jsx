@@ -16,9 +16,8 @@ function Writing({ labelName, type, name, placeholder, loading }) {
       {type === "select" ? (
         <Form.Select name={name} disabled={loading}>
           <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
+          <option value="male">M</option>
+          <option value="female">F</option>
         </Form.Select>
       ) : (
         <Form.Control type={type} name={name} placeholder={placeholder} disabled={loading} />
