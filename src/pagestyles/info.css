@@ -1,9 +1,16 @@
 body {
-    background: white;
+    background-image: url(/src/assets/background.jpg);
+    /* background-color: #E0FFFF; */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ màn hình */
+    background-repeat: no-repeat; /* Không lặp lại ảnh */
+    background-position: center; /* Căn giữa ảnh */
     min-height: 100vh; /* Đảm bảo nội dung tối thiểu bằng chiều cao màn hình */
     overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
 }
 
+.profile-image-container img {
+    margin-bottom: 50px; /* Tạo khoảng cách */
+}
 
 .profile-button {
     background: rgb(13, 110, 253);
