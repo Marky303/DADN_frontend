@@ -31,15 +31,16 @@ export const UserauthProvider = () => {
       : null
   );
 
+  let [user, setUser] = useState(null);
+
   let [loading, setLoading] = useState(false);
 
   // FUNCTIONS
   const sendRequest = async (e, requestType) => {
     setLoading(true);
-    console.log("Request type: " + requestType);
+    let result = null;
 
     try {
-      let response = null;
       switch (requestType) {
         case "login":
           await login(e);
@@ -51,22 +52,20 @@ export const UserauthProvider = () => {
           await activate(e);
           break;
         case "info":
-          response = await info(e); // Lấy dữ liệu từ API
+          await info(e);
           break;
         case "update_info_user":
-          response = await update_info_user(e);
+          result = await update_info_user(e);
           break;
         default:
           throw new Error("Request type undefined");
       }
-
-      setLoading(false);
-      return response; // ✅ Trả về dữ liệu API cho `Info.jsx`
     } catch (error) {
       handleError(error);
-      setLoading(false);
-      return null;
     }
+
+    setLoading(false);
+    return result;
   };
 
 
@@ -147,8 +146,6 @@ export const UserauthProvider = () => {
       re_password: e.target.re_password.value,
     };
 
-    console.log(body);
-
     const response = await axios.post(
       import.meta.env.VITE_BACKEND_SIGNUP_ENDPOINT,
       body,
@@ -166,7 +163,6 @@ export const UserauthProvider = () => {
       );
       navigate("/login");
     } else {
-      console.log(response);
       throw e;
     }
   };
@@ -179,21 +175,19 @@ export const UserauthProvider = () => {
     });
 
     if (response && response.status == 200) {
-      console.log(response.data);
-      return response.data; // ✅ Trả về dữ liệu user từ API
+      setUser(response.data);
     } else {
       throw e;
     }
   };
 
   const update_info_user = async (e) => {
-    console.log("Updating user info...");
     const body = {
-      Name: e.name,
-      PhoneNumber: e.phone,
-      DateOfBirth: e.dob,
-      Gender: e.gender,
-      Address: e.address,
+      Name: e.target.Name.value,
+      PhoneNumber: e.target.PhoneNumber.value,
+      DateOfBirth: e.target.DateOfBirth.value,
+      Gender: e.target.Gender.value,
+      Address: e.target.Address.value,
     };
     console.log(body);
     const response = await axios.post(
@@ -209,7 +203,7 @@ export const UserauthProvider = () => {
 
     if (response && response.status == 200) {
       notify("success", "User info updated!");
-      return response.data;
+      return true;
     } else {
       throw e;
     }
@@ -257,6 +251,7 @@ export const UserauthProvider = () => {
   const contextData = {
     // Variables
     accessToken: accessToken,
+    user: user,
     loading: loading,
 
     // Functions

@@ -22,21 +22,21 @@ const PlantInfo = () => {
         notifications: [
             { time: "10:31 AM", message: "Light level is too high, need to change the position!", type: "alert" },
             { time: "09:50 AM", message: 'Plan "Default" is applied', type: "info" },
-            { time: "09:30 AM", message: "Moisture level is too low!", type: "alert" },        
+            { time: "09:30 AM", message: "Moisture level is too low!", type: "alert" },
         ],
     };
 
     return (
-        <div style={{ padding: "20px", backgroundColor: "#EDEDED", height: "100vh", overflowY: "auto" }}>
+        <div style={{ paddingTop: 5 + "px", padding: 15 + "px", backgroundColor: "#EDEDED", height: 90.9 + "dvh", overflowY: "scroll" }}>
             <h1>Plant Details - {plantID}</h1>
 
-            <div style={{ 
-                display: "grid", 
+            <div style={{
+                display: "grid",
                 gridTemplateColumns: "2fr 1fr", /* Chia thành 2 cột: 2 phần thông số - 1 phần Notifications */
-                gap: "20px" 
+                gap: 15 + " px"
             }}>
                 {/* Cột trái: Các thông số cây (Plant Parameters) */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginRight: 15 + "px" }}>
                     <PlantParameter label="Temperature" value={plantData.temperature} unit="°C" range="28°C - 32°C" bgColor="#FFA500" />
                     <PlantParameter label="Light Level" value={plantData.light} unit="%" range="70% - 80%" bgColor="#BFD732" />
                     <PlantParameter label="Soil Humidity" value={plantData.humidity} unit="ml" range="50ml - 75ml" bgColor="#D2A679" />
