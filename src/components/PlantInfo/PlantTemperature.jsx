@@ -79,6 +79,10 @@ const PlantTemperature = () => {
         changeGraph("Temperature");
     }
 
+    const roundToOneDecimal = (num) => {
+        return Math.round(num * 10) / 10;
+    }
+    
     const hoverStyles = {
         transform: "scale(1.01)",
         boxShadow: "0px 4px 10px rgb(0, 102, 255, 0.5)",
@@ -188,13 +192,13 @@ const PlantTemperature = () => {
                     <p
                         style={{
                             lineHeight: 100 + "%",
-                            fontSize: 50 + "px",
+                            fontSize: 45 + "px",
                             fontWeight: 700,
                             margin: 0,
                             textAlign: "right",
                         }}
                     >
-                        {value != null ? value + "°C" : ""}
+                        {value != null ? roundToOneDecimal(value) + "°C" : ""}
                     </p>
                 </Col>
             </Row>

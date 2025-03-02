@@ -29,6 +29,7 @@ import Plants from "./pages/Main/Plants";
 import Plans from "./pages/Main/Plans";
 import Info from "./pages/Main/Info";
 import PlantInfo from "./pages/Main/PlantInfo";
+import PlantData from "./pages/Main/PlantData";
 
 // Import special pages
 import PageNotFound from "./pages/Error/PageNotFound";
@@ -56,6 +57,7 @@ const App = () => (
                 <Route exact path="/plans" element={<Plans />} />
                 <Route exact path="/info" element={<Info />} />
                 <Route path="/plants/:serialID" element={<PlantInfo />} />
+                <Route path="/plants/:serialID/data" element={<PlantData />} />
               </Route>
             </Route>
           </Route>
