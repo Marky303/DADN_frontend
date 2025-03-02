@@ -70,7 +70,7 @@ const PlantGraph = () => {
             <div className="d-flex justify-content-between align-items-center px-2">
                 <h4>
                     <i className="fa-solid fa-clock-rotate-left"></i>
-                    {" " +currentGraph} History ({hoursAgo} Hours)
+                    {" " + currentGraph} History ({hoursAgo} Hours)
                 </h4>
                 <Breadcrumb className="mb-0">
                     <Breadcrumb.Item onClick={() => setHoursAgo(1)}>
@@ -89,10 +89,10 @@ const PlantGraph = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                         dataKey="Time"
-                        tickFormatter={(time) => format(new Date(time), "HH:mm")}
+                        tickFormatter={(time) => format(new Date(time * 1000), "HH:mm")}
                     />
                     <YAxis />
-                    <Tooltip labelFormatter={(time) => format(new Date(time), "HH:mm")} />
+                    <Tooltip labelFormatter={(time) => format(new Date(time * 1000), "HH:mm")} />
                     <Line type="monotone" dataKey="Value" stroke="#FF5733" />
                 </LineChart>
             </ResponsiveContainer>
