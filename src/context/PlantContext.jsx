@@ -38,6 +38,9 @@ export const PlantProvider = () => {
         case "get_all_plant":
           await getAllPlants();
           break;
+        case "register_plant":
+          await registerPlant(e);
+          break;
         default:
           throw new Error("Request type undefined");
       }
@@ -94,8 +97,7 @@ export const PlantProvider = () => {
   }
 
   const getPlantName = (SerialID) => {
-    if (plantList.length != 0)
-    { 
+    if (plantList.length != 0) {
       const plant = plantList.find(p => p.SerialID === SerialID);
       return plant.Name;
     }
@@ -117,9 +119,32 @@ export const PlantProvider = () => {
     }
   }
 
+  const registerPlant = async (e) => {
+    const body = {
+      SerialID: e.target.SerialID.value,
+      Key: e.target.Key.value,
+    };
+
+    const response = await axios.post(import.meta.env.VITE_BACKEND_REGISTER_PLANTS_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlants();
+    } else {
+      throw e;
+    }
+  }
+
   // EXPORT
   const contextData = {
     // Variables
+    loading: loading,
     plantList: plantList,
     currentGraph: currentGraph,
 
