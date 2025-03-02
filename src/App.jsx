@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Import contexts
 import { UserauthProvider } from "./context/UserauthContext";
+import { PlantProvider } from "./context/PlantContext";
 
 // Import private route/link check
 import PrivateRouteCheck from "./hocs/PrivateRouteCheck";
@@ -48,12 +49,14 @@ const App = () => (
             <Route exact path="/signup" element={<Signup />} />
             <Route exact path="/activate/:uid/:token" element={<Activate />} />
 
-            <Route exact path="/" element={<ChatBubbleLayout />}>
-              <Route exact path="/dashboard" element={<Dashboard />} />
-              <Route exact path="/plants" element={<Plants />} />
-              <Route exact path="/plans" element={<Plans />} />
-              <Route exact path="/info" element={<Info />} />
-              <Route path="/plants/:plantID" element={<PlantInfo />} />
+            <Route exact path="/" element={<PlantProvider />}>
+              <Route exact path="/" element={<ChatBubbleLayout />}>
+                <Route exact path="/dashboard" element={<Dashboard />} />
+                <Route exact path="/plants" element={<Plants />} />
+                <Route exact path="/plans" element={<Plans />} />
+                <Route exact path="/info" element={<Info />} />
+                <Route path="/plants/:serialID" element={<PlantInfo />} />
+              </Route>
             </Route>
           </Route>
         </Route>
