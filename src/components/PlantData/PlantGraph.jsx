@@ -9,7 +9,7 @@ import {
     onSnapshot,
 } from "firebase/firestore";
 
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { Row, Col, Form } from "react-bootstrap";
 import {
     LineChart,
     Line,
@@ -63,41 +63,47 @@ const PlantGraph = () => {
         <div
             style={{
                 backgroundColor: "white",
-                padding: "15px",
                 borderRadius: "10px",
+                marginRight: 15 + "px",
             }}
+            className="p-1 pt-3"
         >
-            <div className="d-flex justify-content-between align-items-center px-2">
-                <h4>
-                    <i className="fa-solid fa-clock-rotate-left"></i>
-                    {" " + currentGraph} History ({hoursAgo} Hours)
-                </h4>
-                <Breadcrumb className="mb-0">
-                    <Breadcrumb.Item onClick={() => setHoursAgo(1)}>
-                        1 Hour
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item onClick={() => setHoursAgo(6)}>
-                        6 Hours
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item onClick={() => setHoursAgo(24)}>
-                        24 Hours
-                    </Breadcrumb.Item>
-                </Breadcrumb>
-            </div>
-            <ResponsiveContainer width="95%" height={300}>
+            <Row className="px-4 mb-3">
+                <Col className="px-1 d-flex align-items-center">
+                    <span className="me-2">Stat</span>
+                    <Form.Select>
+                        <option>Temperature</option>
+                        <option>Light</option>
+                        <option>SoilHumidity</option>
+                        <option>Moisture</option>
+                    </Form.Select>
+                </Col>
+                <Col className="px-1 d-flex align-items-center">
+                    <span className="me-2">From</span>
+                    <input type="date" className="form-control" name="from" />
+                </Col>
+                <Col className="px-1 d-flex align-items-center">
+                    <span className="me-2">To</span>
+                    <input type="date" className="form-control" name="from" />
+                </Col>
+            </Row>
+            <ResponsiveContainer width="95%" height="87%">
                 <LineChart data={data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                         dataKey="Time"
                         tickFormatter={(time) => format(new Date(time * 1000), "HH:mm")}
                     />
-                    <YAxis tickFormatter={(value) => (Math.round(value * 10) / 10).toFixed(1)} />
-                    <Tooltip formatter={(value) => (Math.round(value * 10) / 10).toFixed(1)}
-                        labelFormatter={(time) => format(new Date(time * 1000), "HH:mm")} />
+                    <YAxis
+                        tickFormatter={(value) => (Math.round(value * 10) / 10).toFixed(1)}
+                    />
+                    <Tooltip
+                        formatter={(value) => (Math.round(value * 10) / 10).toFixed(1)}
+                        labelFormatter={(time) => format(new Date(time * 1000), "HH:mm")}
+                    />
                     <Line type="monotone" dataKey="Value" stroke="#FF5733" />
                 </LineChart>
             </ResponsiveContainer>
-
         </div>
     );
 };
