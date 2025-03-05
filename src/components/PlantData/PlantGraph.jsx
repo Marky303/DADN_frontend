@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -7,9 +7,11 @@ import {
     orderBy,
     where,
     onSnapshot,
+    doc,
+    getDoc,
 } from "firebase/firestore";
 
-import { Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form, Dropdown } from "react-bootstrap";
 import {
     LineChart,
     Line,
@@ -18,30 +20,83 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
+    ReferenceLine,
 } from "recharts";
+import Popup from "reactjs-popup";
+
+import ChooseDateTime from "./ChooseDateTime";
+
 import { format } from "date-fns";
 
 import PlantContext from "../../context/PlantContext";
 
+const upperLineLegendMap = {
+    Temperature: "Hot",
+    Light: "Bright",
+    SoilHumidity: "Soggy",
+    Moisture: "Saturated",
+};
+
+const lowerLineLegendMap = {
+    Temperature: "Cold",
+    Light: "Dark",
+    SoilHumidity: "Dry",
+    Moisture: "Dry",
+};
+
 const PlantGraph = () => {
     const { serialID } = useParams();
-    const { initializeFirestore, currentGraph } = useContext(PlantContext);
-
-    const [hoursAgo, setHoursAgo] = useState(1);
+    const { initializeFirestore, changeGraph, currentGraph } =
+        useContext(PlantContext);
 
     const [data, setData] = useState([]);
+
+    const [range, setRange] = useState({ from: null, to: null });
+
+    const [desiredRange, setDesiredRange] = useState(null);
+
+    const [showReferenceLines, setShowReferenceLines] = useState(true);
+
+    useEffect(() => {
+        const fetchdesiredRange = async () => {
+            const db = initializeFirestore();
+            const planDocRef = doc(db, "Plant_Plan", serialID);
+
+            try {
+                const docSnap = await getDoc(planDocRef);
+                if (docSnap.exists()) {
+                    const planData = docSnap.data().Plan;
+                    if (planData?.StatRanges?.[currentGraph]) {
+                        const { min, max } = planData.StatRanges[currentGraph];
+                        setDesiredRange({ min, max });
+                    } else {
+                        setDesiredRange(null);
+                    }
+                } else {
+                    setDesiredRange(null);
+                }
+            } catch (error) {
+                console.error("Error fetching plant plan:", error);
+            }
+        };
+
+        fetchdesiredRange();
+    }, [serialID, currentGraph]);
 
     useEffect(() => {
         let db = initializeFirestore();
         const logsRef = collection(db, "Plant_" + currentGraph, serialID, "Logs");
 
-        const ticksAgo = Date.now() / 1000 - hoursAgo * 60 * 60;
+        let conditions = [orderBy("Time", "asc")];
 
-        const q = query(
-            logsRef,
-            orderBy("Time", "asc"),
-            where("Time", ">=", ticksAgo)
-        );
+        if (range.from !== null) {
+            conditions.push(where("Time", ">=", range.from));
+        }
+        if (range.to !== null) {
+            conditions.push(where("Time", "<=", range.to));
+        }
+
+        const q = query(logsRef, ...conditions);
 
         const unsubscribe = onSnapshot(
             q,
@@ -57,7 +112,25 @@ const PlantGraph = () => {
         return () => {
             unsubscribe();
         };
-    }, [serialID, currentGraph, hoursAgo]);
+    }, [serialID, currentGraph, range]);
+
+    const handleFromChange = (from) => {
+        setRange((prevRange) => ({
+            ...prevRange,
+            from: from,
+        }));
+    };
+
+    const handleToChange = (to) => {
+        setRange((prevRange) => ({
+            ...prevRange,
+            to: to,
+        }));
+    };
+
+    const handleStatChange = (e) => {
+        changeGraph(e.target.value);
+    };
 
     return (
         <div
@@ -71,7 +144,7 @@ const PlantGraph = () => {
             <Row className="px-4 mb-3">
                 <Col className="px-1 d-flex align-items-center">
                     <span className="me-2">Stat</span>
-                    <Form.Select>
+                    <Form.Select onChange={handleStatChange} value={currentGraph}>
                         <option>Temperature</option>
                         <option>Light</option>
                         <option>SoilHumidity</option>
@@ -80,11 +153,73 @@ const PlantGraph = () => {
                 </Col>
                 <Col className="px-1 d-flex align-items-center">
                     <span className="me-2">From</span>
-                    <input type="date" className="form-control" name="from" />
+                    <Dropdown className="flex-grow-1">
+                        <Dropdown.Toggle variant="light" className="w-100 text-start">
+                            {range.from === null
+                                ? "Past"
+                                : format(new Date(range.from * 1000), "yyyy MMM dd, HH:mm")}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleFromChange(null)}>
+                                Past
+                            </Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Popup
+                                trigger={<Dropdown.Item>Choose a time...</Dropdown.Item>}
+                                modal
+                                contentStyle={{ width: "40%" }}
+                            >
+                                <ChooseDateTime
+                                    content="From"
+                                    initialValue={range.from}
+                                    submitFunction={handleFromChange}
+                                />
+                            </Popup>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Col>
                 <Col className="px-1 d-flex align-items-center">
                     <span className="me-2">To</span>
-                    <input type="date" className="form-control" name="from" />
+                    <Dropdown className="flex-grow-1">
+                        <Dropdown.Toggle variant="light" className="w-100 text-start">
+                            {range.to === null
+                                ? "Now"
+                                : format(new Date(range.to * 1000), "yyyy MMM dd, HH:mm")}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleToChange(null)}>
+                                Now
+                            </Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Popup
+                                trigger={<Dropdown.Item>Choose a time...</Dropdown.Item>}
+                                modal
+                                contentStyle={{ width: "40%" }}
+                            >
+                                <ChooseDateTime
+                                    content="To"
+                                    initialValue={range.to}
+                                    submitFunction={handleToChange}
+                                />
+                            </Popup>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+                <Col
+                    xs={2}
+                    className="px-2 d-flex align-items-center"
+                    style={{ gap: 0.65 + "rem" }}
+                >
+                    <span className="me-2">Range</span>
+                    <div className="form-check form-switch d-flex align-items-center">
+                        <input
+                            checked={showReferenceLines}
+                            onChange={() => setShowReferenceLines(prev => !prev)}
+                            className="form-check-input"
+                            type="checkbox"
+                            style={{ width: "2.5rem", height: "1.25rem" }}
+                        />
+                    </div>
                 </Col>
             </Row>
             <ResponsiveContainer width="95%" height="87%">
@@ -99,8 +234,28 @@ const PlantGraph = () => {
                     />
                     <Tooltip
                         formatter={(value) => (Math.round(value * 10) / 10).toFixed(1)}
-                        labelFormatter={(time) => format(new Date(time * 1000), "HH:mm")}
+                        labelFormatter={(time) =>
+                            format(new Date(time * 1000), "yyyy MMM dd, HH:mm")
+                        }
                     />
+
+                    {showReferenceLines && (
+                        <>
+                            <ReferenceLine
+                                y={desiredRange ? desiredRange.min : 0}
+                                stroke="red"
+                                strokeDasharray="5 5"
+                                label={upperLineLegendMap[currentGraph]}
+                            />
+                            <ReferenceLine
+                                y={desiredRange ? desiredRange.max : 0}
+                                stroke="blue"
+                                strokeDasharray="5 5"
+                                label={lowerLineLegendMap[currentGraph]}
+                            />
+                        </>
+                    )}
+
                     <Line type="monotone" dataKey="Value" stroke="#FF5733" />
                 </LineChart>
             </ResponsiveContainer>
