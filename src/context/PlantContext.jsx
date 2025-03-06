@@ -26,6 +26,8 @@ export const PlantProvider = () => {
 
   let [currentGraph, setCurrentGraph] = useState("Temperature");
 
+  let [planList, setPlanList] = useState([]);
+
   let [loading, setLoading] = useState(false);
 
   // FUNCTIONS
@@ -40,6 +42,27 @@ export const PlantProvider = () => {
           break;
         case "register_plant":
           await registerPlant(e);
+          break;
+        case "get_all_plans":
+          await getAllPlans();
+          break;
+        case "create_plan":
+          await createPlan(e);
+          break;
+        case "delete_plan":
+          await deletePlan(e);
+          break;
+        case "copy_plan":
+          await copyPlan(e);
+          break;
+        case "edit_plan":
+          await editplan(e);
+          break;
+        case "apply_settings":
+          await applySettings(e);
+          break;
+        case "disown_pot":
+          await disownPot(e);
           break;
         default:
           throw new Error("Request type undefined");
@@ -94,30 +117,32 @@ export const PlantProvider = () => {
 
   const changeGraph = (graph) => {
     setCurrentGraph(graph);
-  }
+  };
 
   const getPlantName = (SerialID) => {
     if (plantList.length != 0) {
-      const plant = plantList.find(p => p.SerialID === SerialID);
+      const plant = plantList.find((p) => p.SerialID === SerialID);
       return plant.Name;
     }
-    return ""
-  }
+    return "";
+  };
 
   const getAllPlants = async () => {
-    const response = await axios.get(import.meta.env.VITE_BACKEND_GET_PLANTS_ENDPOINT, {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    });
+    const response = await axios.get(
+      import.meta.env.VITE_BACKEND_GET_PLANTS_ENDPOINT,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
 
     if (response && response.status == 200) {
-      console.log(response.data.data)
       setPlantList(response.data.data);
     } else {
       throw e;
     }
-  }
+  };
 
   const registerPlant = async (e) => {
     const body = {
@@ -125,17 +150,196 @@ export const PlantProvider = () => {
       Key: e.target.Key.value,
     };
 
-    const response = await axios.post(import.meta.env.VITE_BACKEND_REGISTER_PLANTS_ENDPOINT,
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_REGISTER_PLANTS_ENDPOINT,
       body,
       {
         headers: {
           Authorization: "Bearer " + accessToken,
         },
-      });
+      }
+    );
 
     if (response && response.status == 200) {
       notify("success", response.data.detail);
       getAllPlants();
+    } else {
+      throw e;
+    }
+  };
+
+  const getAllPlans = async () => {
+    const response = await axios.get(
+      import.meta.env.VITE_BACKEND_GET_PLANS_ENDPOINT,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      setPlanList(response.data.data);
+    } else {
+      throw e;
+    }
+  };
+
+  const createPlan = async (plan) => {
+    const body = {
+      Name: plan.Name,
+      PlantType: plan.PlantType,
+      StatRanges: {
+        Temperature: plan.Temperature,
+        Light: plan.Light,
+        SoilHumidity: plan.SoilHumidity,
+        Moisture: plan.Moisture,
+      },
+      Irrigation: {
+        Schedules: typeof plan.Schedules == "undefined" ? [] : plan.Schedules,
+        Conditions:
+          typeof plan.Conditions == "undefined" ? [] : plan.Conditions,
+      },
+    };
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_CREATE_PLAN_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlans();
+      navigate("/plans");
+    } else {
+      throw e;
+    }
+  };
+
+  const deletePlan = async (planID) => {
+    const body = {
+      planID
+    }
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_DELETE_PLAN_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlans();
+    } else {
+      throw e;
+    }
+  }
+
+  const copyPlan = async (plan) => {
+    const body = plan
+    body.Name = "(Copy) " + body.Name;
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_CREATE_PLAN_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlans();
+    } else {
+      throw e;
+    }
+  }
+
+  const editplan = async (plan) => {
+    const body = {
+      planID: plan.planID,
+      Name: plan.Name,
+      PlantType: plan.PlantType,
+      StatRanges: {
+        Temperature: plan.Temperature,
+        Light: plan.Light,
+        SoilHumidity: plan.SoilHumidity,
+        Moisture: plan.Moisture,
+      },
+      Irrigation: {
+        Schedules: typeof plan.Schedules == "undefined" ? [] : plan.Schedules,
+        Conditions:
+          typeof plan.Conditions == "undefined" ? [] : plan.Conditions,
+      },
+    };
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_EDIT_PLAN_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlans();
+      navigate("/plans");
+    } else {
+      throw e;
+    }
+  };
+
+  const applySettings = async (body) => {
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_APPLY_SETTINGS_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlants();
+    } else {
+      throw e;
+    }
+  }
+
+  const disownPot = async (e) => {
+    const body = {
+      serialID: e.target.serialID.value
+    }
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_DISOWN_POT_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      navigate("/plants");
     } else {
       throw e;
     }
@@ -147,6 +351,7 @@ export const PlantProvider = () => {
     loading: loading,
     plantList: plantList,
     currentGraph: currentGraph,
+    planList: planList,
 
     // Functions
     sendRequest: sendRequest,

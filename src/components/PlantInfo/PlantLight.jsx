@@ -25,12 +25,12 @@ const PlantLight = () => {
     const [desiredRange, setDesiredRange] = useState(null);
 
     useEffect(() => {
-        const fetchdesiredRange = async () => {
-            const db = initializeFirestore();
-            const planDocRef = doc(db, "Plant_Plan", serialID);
-
-            try {
-                const docSnap = await getDoc(planDocRef);
+        const db = initializeFirestore();
+        const planDocRef = doc(db, "Plant_Plan", serialID);
+    
+        const unsubscribe = onSnapshot(
+            planDocRef,
+            (docSnap) => {
                 if (docSnap.exists()) {
                     const planData = docSnap.data().Plan;
                     if (planData?.StatRanges?.Light) {
@@ -42,12 +42,15 @@ const PlantLight = () => {
                 } else {
                     setDesiredRange(null);
                 }
-            } catch (error) {
-                console.error("Error fetching plant plan:", error);
+            },
+            (error) => {
+                console.error("Error listening to plant plan:", error);
             }
+        );
+    
+        return () => {
+            unsubscribe();
         };
-
-        fetchdesiredRange();
     }, [serialID]);
 
     useEffect(() => {
@@ -80,6 +83,10 @@ const PlantLight = () => {
         changeGraph("Light");
     }
 
+    const roundToOneDecimal = (num) => {
+        return Math.round(num * 10) / 10;
+    }
+    
     const hoverStyles = {
         transform: "scale(1.01)",
         boxShadow: "0px 4px 10px rgb(0, 102, 255, 0.5)",
@@ -189,13 +196,13 @@ const PlantLight = () => {
                     <p
                         style={{
                             lineHeight: 100 + "%",
-                            fontSize: 50 + "px",
+                            fontSize: 45 + "px",
                             fontWeight: 700,
                             margin: 0,
                             textAlign: "right",
                         }}
                     >
-                        {value != null ? value + "%" : ""}
+                        {value != null ? roundToOneDecimal(value) + "%" : ""}
                     </p>
                 </Col>
             </Row>

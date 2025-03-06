@@ -91,11 +91,13 @@ const PlantGraph = () => {
                         dataKey="Time"
                         tickFormatter={(time) => format(new Date(time * 1000), "HH:mm")}
                     />
-                    <YAxis />
-                    <Tooltip labelFormatter={(time) => format(new Date(time * 1000), "HH:mm")} />
+                    <YAxis tickFormatter={(value) => (Math.round(value * 10) / 10).toFixed(1)} />
+                    <Tooltip formatter={(value) => (Math.round(value * 10) / 10).toFixed(1)}
+                        labelFormatter={(time) => format(new Date(time * 1000), "HH:mm")} />
                     <Line type="monotone" dataKey="Value" stroke="#FF5733" />
                 </LineChart>
             </ResponsiveContainer>
+
         </div>
     );
 };

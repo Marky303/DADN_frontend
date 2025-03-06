@@ -51,34 +51,42 @@ const PlantTemperature = () => {
 
     useEffect(() => {
         const db = initializeFirestore();
-        const logsRef = collection(db, "Plant_Temperature", serialID, "Logs");
-
-        const q = query(logsRef, orderBy("Time", "desc"), limit(1));
-
+        const planDocRef = doc(db, "Plant_Plan", serialID);
+    
         const unsubscribe = onSnapshot(
-            q,
-            (querySnapshot) => {
-                if (!querySnapshot.empty) {
-                    const latestEntry = querySnapshot.docs[0].data();
-                    setValue(latestEntry.Value);
+            planDocRef,
+            (docSnap) => {
+                if (docSnap.exists()) {
+                    const planData = docSnap.data().Plan;
+                    if (planData?.StatRanges?.Temperature) {
+                        const { min, max } = planData.StatRanges.Temperature;
+                        setDesiredRange({ min, max });
+                    } else {
+                        setDesiredRange(null);
+                    }
                 } else {
-                    setValue(null);
+                    setDesiredRange(null);
                 }
             },
-            (err) => {
-                console.error("Error listening to logs:", err);
+            (error) => {
+                console.error("Error listening to plant plan:", error);
             }
         );
-
+    
         return () => {
             unsubscribe();
         };
     }, [serialID]);
+    
 
     const handleGraphChange = () => {
         changeGraph("Temperature");
     }
 
+    const roundToOneDecimal = (num) => {
+        return Math.round(num * 10) / 10;
+    }
+    
     const hoverStyles = {
         transform: "scale(1.01)",
         boxShadow: "0px 4px 10px rgb(0, 102, 255, 0.5)",
@@ -188,13 +196,13 @@ const PlantTemperature = () => {
                     <p
                         style={{
                             lineHeight: 100 + "%",
-                            fontSize: 50 + "px",
+                            fontSize: 45 + "px",
                             fontWeight: 700,
                             margin: 0,
                             textAlign: "right",
                         }}
                     >
-                        {value != null ? value + "°C" : ""}
+                        {value != null ? roundToOneDecimal(value) + "°C" : ""}
                     </p>
                 </Col>
             </Row>

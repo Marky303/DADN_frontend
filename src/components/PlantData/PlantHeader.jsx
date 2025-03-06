@@ -4,9 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Row, Col, Card, Badge, Button } from "react-bootstrap";
 import { Tooltip } from 'react-tooltip'
 
-import PlantContext from "../../context/PlantContext";
-
 import PlantSettings from "../PlantSetting/PlantSettings";
+
+import PlantContext from "../../context/PlantContext";
 
 const PlantHeader = () => {
     const navigate = useNavigate();
@@ -15,17 +15,17 @@ const PlantHeader = () => {
 
     return (
         <div className="d-flex align-items-center">
-            <h1>Plant Dashboard - {getPlantName(serialID)}</h1>
+            <h1>Plant Data - {getPlantName(serialID)}</h1>
             <div className="ms-auto d-flex gap-2">
                 <Button
-                    data-tooltip-id="plantDataTooltip"
-                    data-tooltip-content="Detailed data"
+                    data-tooltip-id="plantDashboardTooltip"
+                    data-tooltip-content="Dashboard"
                     style={{ borderColor: "#878787", backgroundColor: "#b3b3b3", height: 37 + "px", width: 37 + "px" }}
                     className="p-0 d-flex justify-content-center align-items-center"
-                    onClick={() => navigate("/plants/" + serialID + "/data")}
+                    onClick={() => navigate("/plants/" + serialID)}
                 >
-                    <Tooltip id="plantDataTooltip" />
-                    <i className="fa-solid fa-magnifying-glass"></i>
+                    <Tooltip id="plantDashboardTooltip" />
+                    <i className="fa-solid fa-chart-simple"></i>
                 </Button>
                 <PlantSettings/>
 

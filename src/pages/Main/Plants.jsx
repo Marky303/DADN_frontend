@@ -29,7 +29,7 @@ const Plants = () => {
             <Popup
                 trigger={
                     <Button className="m-4 mb-0 mt-3" variant="primary">
-                        Register plant
+                        Register pot
                     </Button>
                 }
                 modal

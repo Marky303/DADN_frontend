@@ -25,12 +25,12 @@ const PlantMoisture = () => {
     const [desiredRange, setDesiredRange] = useState(null);
 
     useEffect(() => {
-        const fetchdesiredRange = async () => {
-            const db = initializeFirestore();
-            const planDocRef = doc(db, "Plant_Plan", serialID);
-
-            try {
-                const docSnap = await getDoc(planDocRef);
+        const db = initializeFirestore();
+        const planDocRef = doc(db, "Plant_Plan", serialID);
+    
+        const unsubscribe = onSnapshot(
+            planDocRef,
+            (docSnap) => {
                 if (docSnap.exists()) {
                     const planData = docSnap.data().Plan;
                     if (planData?.StatRanges?.Moisture) {
@@ -42,12 +42,15 @@ const PlantMoisture = () => {
                 } else {
                     setDesiredRange(null);
                 }
-            } catch (error) {
-                console.error("Error fetching plant plan:", error);
+            },
+            (error) => {
+                console.error("Error listening to plant plan:", error);
             }
+        );
+    
+        return () => {
+            unsubscribe();
         };
-
-        fetchdesiredRange();
     }, [serialID]);
 
     useEffect(() => {
@@ -78,6 +81,10 @@ const PlantMoisture = () => {
 
     const handleGraphChange = () => {
         changeGraph("Moisture");
+    }
+
+    const roundToOneDecimal = (num) => {
+        return Math.round(num * 10) / 10;
     }
 
     const hoverStyles = {
@@ -135,7 +142,7 @@ const PlantMoisture = () => {
                                 gap: "7px",
                             }}
                         >
-                            <i className="fa-solid fa-glass-water"></i>
+                            <i class="fa-solid fa-droplet"></i>
                             Moisture{" "}
                             {value != null && desiredRange != null ? (
                                 value >= desiredRange.min && value <= desiredRange.max ? (
@@ -189,13 +196,13 @@ const PlantMoisture = () => {
                     <p
                         style={{
                             lineHeight: 100 + "%",
-                            fontSize: 50 + "px",
+                            fontSize: 45 + "px",
                             fontWeight: 700,
                             margin: 0,
                             textAlign: "right",
                         }}
                     >
-                        {value != null ? value + "%" : ""}
+                        {value != null ? roundToOneDecimal(value) + "%" : ""}
                     </p>
                 </Col>
             </Row>

@@ -11,7 +11,7 @@ import PlantHeader from "../../components/PlantInfo/PlantHeader";
 
 const PlantInfo = () => {
     return (
-        <div style={{ padding: 15 + "px", paddingTop: 3 + "px", backgroundColor: "#EDEDED", height: 90.9 + "dvh", overflowY: "scroll" }}>
+        <div style={{ padding: 15 + "px", paddingTop: 3 + "px", backgroundColor: "rgb(237, 237, 237, 0.7)", height: 90.9 + "dvh", overflowY: "scroll" }}>
             <PlantHeader></PlantHeader>
 
             <div style={{
