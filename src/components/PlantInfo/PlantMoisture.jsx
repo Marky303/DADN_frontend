@@ -25,12 +25,12 @@ const PlantMoisture = () => {
     const [desiredRange, setDesiredRange] = useState(null);
 
     useEffect(() => {
-        const fetchdesiredRange = async () => {
-            const db = initializeFirestore();
-            const planDocRef = doc(db, "Plant_Plan", serialID);
-
-            try {
-                const docSnap = await getDoc(planDocRef);
+        const db = initializeFirestore();
+        const planDocRef = doc(db, "Plant_Plan", serialID);
+    
+        const unsubscribe = onSnapshot(
+            planDocRef,
+            (docSnap) => {
                 if (docSnap.exists()) {
                     const planData = docSnap.data().Plan;
                     if (planData?.StatRanges?.Moisture) {
@@ -42,12 +42,15 @@ const PlantMoisture = () => {
                 } else {
                     setDesiredRange(null);
                 }
-            } catch (error) {
-                console.error("Error fetching plant plan:", error);
+            },
+            (error) => {
+                console.error("Error listening to plant plan:", error);
             }
+        );
+    
+        return () => {
+            unsubscribe();
         };
-
-        fetchdesiredRange();
     }, [serialID]);
 
     useEffect(() => {

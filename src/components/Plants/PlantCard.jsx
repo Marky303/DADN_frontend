@@ -53,7 +53,6 @@ const PlantCard = ({plant}) => {
             />
             <Card.Body>
                 <Card.Title>{plant.Name}</Card.Title>
-                <Card.Text>Some text</Card.Text>
             </Card.Body>
         </Card>
     );

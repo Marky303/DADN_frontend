@@ -51,29 +51,33 @@ const PlantTemperature = () => {
 
     useEffect(() => {
         const db = initializeFirestore();
-        const logsRef = collection(db, "Plant_Temperature", serialID, "Logs");
-
-        const q = query(logsRef, orderBy("Time", "desc"), limit(1));
-
+        const planDocRef = doc(db, "Plant_Plan", serialID);
+    
         const unsubscribe = onSnapshot(
-            q,
-            (querySnapshot) => {
-                if (!querySnapshot.empty) {
-                    const latestEntry = querySnapshot.docs[0].data();
-                    setValue(latestEntry.Value);
+            planDocRef,
+            (docSnap) => {
+                if (docSnap.exists()) {
+                    const planData = docSnap.data().Plan;
+                    if (planData?.StatRanges?.Temperature) {
+                        const { min, max } = planData.StatRanges.Temperature;
+                        setDesiredRange({ min, max });
+                    } else {
+                        setDesiredRange(null);
+                    }
                 } else {
-                    setValue(null);
+                    setDesiredRange(null);
                 }
             },
-            (err) => {
-                console.error("Error listening to logs:", err);
+            (error) => {
+                console.error("Error listening to plant plan:", error);
             }
         );
-
+    
         return () => {
             unsubscribe();
         };
     }, [serialID]);
+    
 
     const handleGraphChange = () => {
         changeGraph("Temperature");

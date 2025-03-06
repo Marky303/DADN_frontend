@@ -6,6 +6,8 @@ import { Tooltip } from 'react-tooltip'
 
 import PlantContext from "../../context/PlantContext";
 
+import PlantSettings from "../PlantSetting/PlantSettings";
+
 const PlantHeader = () => {
     const navigate = useNavigate();
     const { serialID } = useParams();
@@ -25,16 +27,7 @@ const PlantHeader = () => {
                     <Tooltip id="plantDataTooltip" />
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </Button>
-                <Button
-                    data-tooltip-id="plantSettingsTooltip"
-                    data-tooltip-content="Settings"
-                    style={{ borderColor: "#878787", backgroundColor: "#b3b3b3", height: 37 + "px", width: 37 + "px" }}
-                    className="p-0 d-flex justify-content-center align-items-center"
-                    onClick={() => navigate("/plants/" + serialID + "/settings")}
-                >
-                    <Tooltip id="plantSettingsTooltip" />
-                    <i className="fa-solid fa-bars"></i>
-                </Button>
+                <PlantSettings/>
 
             </div>
         </div>

@@ -58,6 +58,12 @@ export const PlantProvider = () => {
         case "edit_plan":
           await editplan(e);
           break;
+        case "apply_settings":
+          await applySettings(e);
+          break;
+        case "disown_pot":
+          await disownPot(e);
+          break;
         default:
           throw new Error("Request type undefined");
       }
@@ -296,6 +302,48 @@ export const PlantProvider = () => {
       throw e;
     }
   };
+
+  const applySettings = async (body) => {
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_APPLY_SETTINGS_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      getAllPlants();
+    } else {
+      throw e;
+    }
+  }
+
+  const disownPot = async (e) => {
+    const body = {
+      serialID: e.target.serialID.value
+    }
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_DISOWN_POT_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      notify("success", response.data.detail);
+      navigate("/plants");
+    } else {
+      throw e;
+    }
+  }
 
   // EXPORT
   const contextData = {
