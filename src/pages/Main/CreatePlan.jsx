@@ -1,0 +1,529 @@
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { Row, Col } from "react-bootstrap";
+import BootstrapButton from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+
+import {
+    Form,
+    InputNumber,
+    Button,
+    Space,
+    TimePicker,
+    Select,
+    Input,
+} from "antd";
+import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+
+import PlantContext from "../../context/PlantContext";
+
+const CreatePlan = () => {
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
+    const { sendRequest, loading } = useContext(PlantContext);
+
+    const handleSubmit = (plan) => {
+        if (Array.isArray(plan.Schedules)) {
+            plan.Schedules = plan.Schedules.map((schedule) => ({
+                ...schedule,
+                Time: schedule.Time ? schedule.Time.format("HH:mm") : "",
+            }));
+        }
+        sendRequest(plan, "create_plan");
+    };
+
+    return (
+        <div
+            className="d-flex justify-content-center"
+            style={{
+                paddingTop: "1rem",
+                height: "90.9dvh",
+            }}
+        >
+            <div
+                className="col-4 mx-auto"
+                style={{
+                    padding: "30px",
+                    paddingTop: "12px",
+                    paddingBottom: "12px",
+                    borderRadius: "10px",
+                    backgroundColor: "rgba(245, 245, 245, 0.9)",
+                    backdropFilter: "blur(2px)",
+                    height: "85dvh",
+                    width: "50%",
+                    overflowY: "scroll",
+                }}
+            >
+                <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                    <p
+                        className="text-center"
+                        style={{
+                            fontWeight: "bold",
+                            fontSize: "30px",
+                            margin: 0,
+                            marginBottom: "5px",
+                        }}
+                    >
+                        Create a plan
+                    </p>
+
+                    <Row>
+                        <Col xs={8}>
+                            <Form.Item
+                                label={
+                                    <div className="fs-6">
+                                        <i
+                                            style={{ marginRight: 0.25 + "rem" }}
+                                            className="fa-solid fa-solar-panel"
+                                        ></i>
+                                        Plan name
+                                    </div>
+                                }
+                                name="Name"
+                                rules={[{ required: true, message: "Enter plan name" }]}
+                            >
+                                <Input
+                                    style={{ width: "100%" }}
+                                    placeholder="Enter your plan's name"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col>
+                            <Form.Item
+                                label={
+                                    <div className="fs-6">
+                                        <i
+                                            style={{ marginRight: 0.25 + "rem" }}
+                                            className="fa-solid fa-seedling"
+                                        ></i>{" "}
+                                        Plant Type
+                                    </div>
+                                }
+                                name="PlantType"
+                            >
+                                <Select
+                                    style={{
+                                        width: 100 + "%",
+                                    }}
+                                    options={[
+                                        {
+                                            value: "",
+                                            label: "",
+                                        },
+                                        {
+                                            value: "Rose",
+                                            label: "Rose",
+                                        },
+                                        {
+                                            value: "Basil",
+                                            label: "Basil",
+                                        },
+                                        {
+                                            value: "Lily",
+                                            label: "Lily",
+                                        },
+                                    ]}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <hr />
+
+                    <Form.Item
+                        style={{ marginBottom: "2rem", marginTop: "1.25rem" }}
+                        label={
+                            <div className="fs-6">
+                                <i
+                                    style={{ marginRight: "0.25rem" }}
+                                    className="fa-solid fa-temperature-three-quarters"
+                                ></i>
+                                Temperature range (°C)
+                            </div>
+                        }
+                        rules={[{ required: true, message: "Enter temperature range" }]}
+                    >
+                        <Row>
+                            <Col>
+                                <Form.Item name={["Temperature", "min"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter lowest temperature"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col className="d-flex align-items-center justify-content-center" xs={1}>
+                                <i className="fa-solid fa-arrow-right fs-3"></i>
+                            </Col>
+                            <Col>
+                                <Form.Item name={["Temperature", "max"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter highest temperature"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form.Item>
+                    <Form.Item
+                        style={{ marginBottom: "2rem" }}
+                        label={
+                            <div className="fs-6">
+                                <i
+                                    style={{ marginRight: "0.25rem" }}
+                                    className="fa-solid fa-sun"
+                                ></i>
+                                Light level range (%)
+                            </div>
+                        }
+                        rules={[{ required: true, message: "Enter light level range" }]}
+                    >
+                        <Row>
+                            <Col>
+                                <Form.Item name={["Light", "min"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter lowest light level"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col
+                                className="d-flex align-items-center justify-content-center"
+                                xs={1}
+                            >
+                                <i className="fa-solid fa-arrow-right fs-3"></i>
+                            </Col>
+                            <Col>
+                                <Form.Item name={["Light", "max"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter highest light level"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ marginBottom: "2rem" }}
+                        label={
+                            <div className="fs-6">
+                                <i
+                                    style={{ marginRight: "0.25rem" }}
+                                    className="fa-solid fa-glass-water"
+                                ></i>
+                                Soil humidity range (ml)
+                            </div>
+                        }
+                        rules={[{ required: true, message: "Enter soil humidity range" }]}
+                    >
+                        <Row>
+                            <Col>
+                                <Form.Item name={["SoilHumidity", "min"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter lowest soil humidity"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col className="d-flex align-items-center justify-content-center" xs={1}>
+                                <i className="fa-solid fa-arrow-right fs-3"></i>
+                            </Col>
+                            <Col>
+                                <Form.Item name={["SoilHumidity", "max"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter highest soil humidity"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form.Item>
+
+                    <Form.Item
+                        style={{ marginBottom: "2.75rem" }}
+                        label={
+                            <div className="fs-6">
+                                <i
+                                    style={{ marginRight: "0.25rem" }}
+                                    className="fa-solid fa-droplet"
+                                ></i>
+                                Moisture range (%)
+                            </div>
+                        }
+                        rules={[{ required: true, message: "Enter moisture range" }]}
+                    >
+                        <Row>
+                            <Col>
+                                <Form.Item name={["Moisture", "min"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter lowest moisture"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col className="d-flex align-items-center justify-content-center" xs={1}>
+                                <i className="fa-solid fa-arrow-right fs-3"></i>
+                            </Col>
+                            <Col>
+                                <Form.Item name={["Moisture", "max"]} noStyle>
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        placeholder="Enter highest moisture"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form.Item>
+
+                    <hr />
+
+                    <Form.Item
+                        label={
+                            <div className="fs-6">
+                                <i
+                                    style={{ marginRight: 0.25 + "rem" }}
+                                    className="fa-solid fa-clock"
+                                ></i>
+                                Irrigation schedules
+                            </div>
+                        }
+                        style={{ marginTop: 1.25 + "rem" }}
+                    >
+                        <Form.List name="Schedules">
+                            {(fields, { add, remove }) => (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        rowGap: 8,
+                                    }}
+                                >
+                                    {fields.map((field, index) => (
+                                        <Space key={field.name + toString(index)} align="baseline">
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "Time"]}
+                                                rules={[
+                                                    { required: true, message: "Please select a time" },
+                                                ]}
+                                            >
+                                                <TimePicker
+                                                    style={{ width: "8rem" }}
+                                                    format="HH:mm"
+                                                    use12Hours={false}
+                                                    showNow={false}
+                                                    minuteStep={1}
+                                                />
+                                            </Form.Item>
+
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "TargetSoilHumidity"]}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please enter soil humidity",
+                                                    },
+                                                ]}
+                                            >
+                                                <InputNumber
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                    placeholder="Target humidity"
+                                                    min={0}
+                                                />
+                                            </Form.Item>
+
+                                            <CloseOutlined onClick={() => remove(field.name)} />
+                                        </Space>
+                                    ))}
+                                    <Button
+                                        type="dashed"
+                                        onClick={() => add()}
+                                        block
+                                        icon={<PlusOutlined />}
+                                    >
+                                        Add Schedule
+                                    </Button>
+                                </div>
+                            )}
+                        </Form.List>
+                    </Form.Item>
+
+                    <hr />
+
+                    <Form.Item
+                        label={
+                            <div className="fs-6">
+                                <i
+                                    style={{ marginRight: 0.25 + "rem" }}
+                                    className="fa-solid fa-fan"
+                                ></i>
+                                Irrigation conditions
+                            </div>
+                        }
+                        style={{ marginTop: 1.25 + "rem" }}
+                    >
+                        <Form.List name="Conditions">
+                            {(fields, { add, remove }) => (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        rowGap: 8,
+                                    }}
+                                >
+                                    {fields.map((field, index) => (
+                                        <Space key={field.name + toString(index)} align="baseline">
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "TargetStat"]}
+                                                rules={[
+                                                    { required: true, message: "Please choose a stat" },
+                                                ]}
+                                            >
+                                                <Select
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                    options={[
+                                                        {
+                                                            value: "",
+                                                            label: "",
+                                                        },
+                                                        {
+                                                            value: "Temperature",
+                                                            label: "Temperature",
+                                                        },
+                                                        {
+                                                            value: "Moisture",
+                                                            label: "Moisture",
+                                                        },
+                                                        {
+                                                            value: "Light",
+                                                            label: "Light",
+                                                        },
+                                                        {
+                                                            value: "SoilHumidity",
+                                                            label: "SoilHumidity",
+                                                        },
+                                                    ]}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "Type"]}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please select direction",
+                                                    },
+                                                ]}
+                                            >
+                                                <Select
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                    options={[
+                                                        {
+                                                            value: "",
+                                                            label: "",
+                                                        },
+                                                        {
+                                                            value: "Increasing",
+                                                            label: "Increasing",
+                                                        },
+                                                        {
+                                                            value: "Decreasing",
+                                                            label: "Decreasing",
+                                                        },
+                                                    ]}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "TargetValue"]}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please enter target value",
+                                                    },
+                                                ]}
+                                            >
+                                                <InputNumber
+                                                    placeholder="Target value"
+                                                    min={0}
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "TargetSoilHumidity"]}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please enter soil humidity",
+                                                    },
+                                                ]}
+                                            >
+                                                <InputNumber
+                                                    placeholder="Target humidity"
+                                                    min={0}
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                />
+                                            </Form.Item>
+
+                                            <CloseOutlined onClick={() => remove(field.name)} />
+                                        </Space>
+                                    ))}
+                                    <Button
+                                        type="dashed"
+                                        onClick={() => add()}
+                                        block
+                                        icon={<PlusOutlined />}
+                                    >
+                                        Add Condition
+                                    </Button>
+                                </div>
+                            )}
+                        </Form.List>
+                    </Form.Item>
+
+                    <Row>
+                        <Col>
+                            <BootstrapButton
+                                style={{
+                                    width: "100%",
+                                }}
+                                variant="danger"
+                                className="mt-3 mb-3"
+                                onClick={() => navigate("/plans")}
+                            >
+                                Cancel
+                            </BootstrapButton>
+                        </Col>
+                        <Col>
+                            <BootstrapButton
+                                style={{
+                                    width: "100%",
+                                }}
+                                variant="primary"
+                                type="submit"
+                                className="mt-3 mb-3"
+                            >
+                                Accept
+                            </BootstrapButton>
+                        </Col>
+                    </Row>
+                </Form>
+            </div>
+        </div>
+    );
+};
+
+export default CreatePlan;

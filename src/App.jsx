@@ -30,6 +30,9 @@ import Plans from "./pages/Main/Plans";
 import Info from "./pages/Main/Info";
 import PlantInfo from "./pages/Main/PlantInfo";
 import PlantData from "./pages/Main/PlantData";
+import PlantSettings from "./pages/Main/PlantSettings";
+import CreatePlan from "./pages/Main/CreatePlan";
+import EditPlan from "./pages/Main/EditPlan";
 
 // Import special pages
 import PageNotFound from "./pages/Error/PageNotFound";
@@ -51,14 +54,17 @@ const App = () => (
             <Route exact path="/activate/:uid/:token" element={<Activate />} />
 
             <Route exact path="/" element={<PlantProvider />}>
-              <Route exact path="/" element={<ChatBubbleLayout />}>
-                <Route exact path="/dashboard" element={<Dashboard />} />
-                <Route exact path="/plants" element={<Plants />} />
-                <Route exact path="/plans" element={<Plans />} />
-                <Route exact path="/info" element={<Info />} />
-                <Route path="/plants/:serialID" element={<PlantInfo />} />
-                <Route path="/plants/:serialID/data" element={<PlantData />} />
-              </Route>
+              <Route exact path="/dashboard" element={<Dashboard />} />
+              <Route exact path="/info" element={<Info />} />
+
+              <Route exact path="/plants" element={<Plants />} />
+              <Route exact path="/plants/:serialID" element={<PlantInfo />} />
+              <Route exact path="/plants/:serialID/data" element={<PlantData />} />
+              <Route exact path="/plants/:serialID/settings" element={<PlantSettings />} />
+
+              <Route exact path="/plans" element={<Plans />} />
+              <Route exact path="/plans/createplan" element={<CreatePlan />} />
+              <Route exact path="/plans/editplan/:id" element={<EditPlan />} />
             </Route>
           </Route>
         </Route>

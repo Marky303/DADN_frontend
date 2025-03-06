@@ -139,7 +139,7 @@ const PlantMoisture = () => {
                                 gap: "7px",
                             }}
                         >
-                            <i className="fa-solid fa-glass-water"></i>
+                            <i class="fa-solid fa-droplet"></i>
                             Moisture{" "}
                             {value != null && desiredRange != null ? (
                                 value >= desiredRange.min && value <= desiredRange.max ? (

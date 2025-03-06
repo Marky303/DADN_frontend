@@ -8,7 +8,7 @@ const PlantData = () => {
             style={{
                 padding: 15 + "px",
                 paddingTop: 3 + "px",
-                backgroundColor: "#EDEDED",
+                backgroundColor: "rgb(237, 237, 237, 0.7)",
                 height: 90.8 + "dvh",
                 overflowY: "hidden"
             }}
