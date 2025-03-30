@@ -14,8 +14,12 @@ import {
 } from "antd";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import Popup from 'reactjs-popup';
 
 import PlantContext from "../../context/PlantContext";
+import hhmmToSeconds from "../../functions/dateConversion/hhmmToSeconds";
+import PlanScheduleTooltip from "../../components/Plans/PlanScheduleTooltip";
+import PlanConditionTooltip from "../../components/Plans/PlanConditionTooltip";
 
 const EditPlan = () => {
     const navigate = useNavigate();
@@ -29,6 +33,10 @@ const EditPlan = () => {
         ...schedule,
         Time: schedule.Time ? dayjs(schedule.Time, "HH:mm") : null,
     }));
+    const convertedConditions = data.Irrigation.Conditions.map((condition) => ({
+        ...condition,
+        Cooldown: condition.Cooldown ? dayjs().startOf("day").add(condition.Cooldown, "seconds") : null,
+    }));
     const initialData = {
         Name: data.Name,
         PlantType: data.PlantType,
@@ -37,8 +45,8 @@ const EditPlan = () => {
         SoilHumidity: data.StatRanges.SoilHumidity,
         Moisture: data.StatRanges.Moisture,
         Schedules: convertedSchedules,
-        Conditions: data.Irrigation.Conditions
-    }
+        Conditions: convertedConditions
+    };
 
     const handleSubmit = (plan) => {
         plan.planID = planData.id;
@@ -46,6 +54,12 @@ const EditPlan = () => {
             plan.Schedules = plan.Schedules.map((schedule) => ({
                 ...schedule,
                 Time: schedule.Time ? schedule.Time.format("HH:mm") : "",
+            }));
+        }
+        if (Array.isArray(plan.Conditions)) {
+            plan.Conditions = plan.Conditions.map((condition) => ({
+                ...condition,
+                Cooldown: condition.Cooldown ? hhmmToSeconds(condition.Cooldown.format("HH:mm")) : 0,
             }));
         }
         sendRequest(plan, "edit_plan");
@@ -69,11 +83,11 @@ const EditPlan = () => {
                     backgroundColor: "rgba(245, 245, 245, 0.9)",
                     backdropFilter: "blur(2px)",
                     height: "85dvh",
-                    width: "50%",
+                    width: "60%",
                     overflowY: "scroll",
                 }}
             >
-                <Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={initialData}>
+                <Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={initialData} disabled={loading}>
                     <p
                         className="text-center"
                         style={{
@@ -83,7 +97,7 @@ const EditPlan = () => {
                             marginBottom: "5px",
                         }}
                     >
-                        Create a plan
+                        Edit existing plan
                     </p>
 
                     <Row>
@@ -141,6 +155,10 @@ const EditPlan = () => {
                                             value: "Lily",
                                             label: "Lily",
                                         },
+                                        {
+                                            value: "Cactus",
+                                            label: "Cactus",
+                                        }
                                     ]}
                                 />
                             </Form.Item>
@@ -299,11 +317,30 @@ const EditPlan = () => {
                     <Form.Item
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: 0.25 + "rem" }}
-                                    className="fa-solid fa-clock"
-                                ></i>
-                                Irrigation schedules
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: 0.25 + "rem" }}
+                                            className="fa-solid fa-clock"
+                                        ></i>
+                                        Irrigation schedules{" "}
+                                        <i
+                                            className="fa-solid fa-question"
+                                        ></i>
+                                    </div>
+                                    }
+                                    on={['hover', 'focus']}
+                                    position='right center'
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: 'rgba(0,0,0,0.0)',
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanScheduleTooltip />
+                                </Popup>
                             </div>
                         }
                         style={{ marginTop: 1.25 + "rem" }}
@@ -318,7 +355,7 @@ const EditPlan = () => {
                                     }}
                                 >
                                     {fields.map((field, index) => (
-                                        <Space key={field.name + toString(index)} align="baseline">
+                                        <Space key={`${field.key}-${index}`} align="baseline">
                                             <Form.Item
                                                 {...field}
                                                 name={[field.name, "Time"]}
@@ -341,7 +378,7 @@ const EditPlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please enter soil humidity",
+                                                        message: "Please enter value",
                                                     },
                                                 ]}
                                             >
@@ -375,11 +412,30 @@ const EditPlan = () => {
                     <Form.Item
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: 0.25 + "rem" }}
-                                    className="fa-solid fa-fan"
-                                ></i>
-                                Irrigation conditions
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: 0.25 + "rem" }}
+                                            className="fa-solid fa-fan"
+                                        ></i>
+                                        Irrigation conditions{" "}
+                                        <i
+                                            className="fa-solid fa-question"
+                                        ></i>
+                                    </div>
+                                    }
+                                    on={['hover', 'focus']}
+                                    position='right center'
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: 'rgba(0,0,0,0.0)',
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanConditionTooltip />
+                                </Popup>
                             </div>
                         }
                         style={{ marginTop: 1.25 + "rem" }}
@@ -394,7 +450,7 @@ const EditPlan = () => {
                                     }}
                                 >
                                     {fields.map((field, index) => (
-                                        <Space key={field.name + toString(index)} align="baseline">
+                                        <Space key={`${field.key}-${index}`} align="baseline">
                                             <Form.Item
                                                 {...field}
                                                 name={[field.name, "TargetStat"]}
@@ -436,7 +492,7 @@ const EditPlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please select direction",
+                                                        message: "Please select type",
                                                     },
                                                 ]}
                                             >
@@ -450,12 +506,12 @@ const EditPlan = () => {
                                                             label: "",
                                                         },
                                                         {
-                                                            value: "Increasing",
-                                                            label: "Increasing",
+                                                            value: ">",
+                                                            label: "Higher",
                                                         },
                                                         {
-                                                            value: "Decreasing",
-                                                            label: "Decreasing",
+                                                            value: "<",
+                                                            label: "Lower",
                                                         },
                                                     ]}
                                                 />
@@ -466,7 +522,7 @@ const EditPlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please enter target value",
+                                                        message: "Please enter value",
                                                     },
                                                 ]}
                                             >
@@ -484,7 +540,7 @@ const EditPlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please enter soil humidity",
+                                                        message: "Please enter value",
                                                     },
                                                 ]}
                                             >
@@ -496,7 +552,25 @@ const EditPlan = () => {
                                                     }}
                                                 />
                                             </Form.Item>
-
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "Cooldown"]}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please enter value",
+                                                    },
+                                                ]}
+                                            >
+                                                <TimePicker
+                                                    placeholder="Cooldown"
+                                                    format={"HH:mm"}
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                    showNow={false}
+                                                />
+                                            </Form.Item>
                                             <CloseOutlined onClick={() => remove(field.name)} />
                                         </Space>
                                     ))}
@@ -539,10 +613,10 @@ const EditPlan = () => {
                             </BootstrapButton>
                         </Col>
                     </Row>
-                </Form>
-            </div>
-        </div>
+                </Form >
+            </div >
+        </div >
     );
-}
+};
 
 export default EditPlan;

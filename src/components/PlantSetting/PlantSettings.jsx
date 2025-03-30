@@ -60,7 +60,7 @@ const PlantSettings = () => {
     const handleDisownPot = (e) => {
         e.preventDefault();
         sendRequest(e, "disown_pot");
-    }
+    };
 
     return (
         <Popup
@@ -89,6 +89,7 @@ const PlantSettings = () => {
                         padding: 20 + "px",
                         paddingTop: 10 + "px",
                         paddingBottom: 15 + "px",
+                        height: 18 + "rem"
                     }}
                     onSubmit={(e) => handleApplySettings(e)}
                 >
@@ -161,6 +162,8 @@ const PlantSettings = () => {
                         padding: 20 + "px",
                         paddingTop: 0 + "px",
                         paddingBottom: 15 + "px",
+                        height: 17 + "rem",
+                        paddingTop: 0.2 + "rem"
                     }}
                     onSubmit={(e) => handleDisownPot(e)}
                 >
