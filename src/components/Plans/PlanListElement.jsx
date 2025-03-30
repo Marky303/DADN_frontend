@@ -13,15 +13,15 @@ const PlanListElement = ({ planData }) => {
 
     const handleDelete = () => {
         sendRequest(planID, "delete_plan");
-    }
+    };
 
     const handleCopy = () => {
         sendRequest(data, "copy_plan");
-    }
+    };
 
     const handleEdit = () => {
         navigate(`/plans/editplan/${planID}`, { state: { planData } });
-    }
+    };
 
     const hoverStyles = {
         transform: "scale(1.005)",
@@ -43,7 +43,13 @@ const PlanListElement = ({ planData }) => {
             }}
             onMouseLeave={() => {
                 Object.assign(ref.current.style, resetStyles);
-            }} className="mb-3" style={{ height: 3 + "rem" }}>
+            }}
+            className="mb-3"
+            style={{
+                height: 3 + "rem",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease"
+            }}
+        >
             <Row className="h-100 px-4">
                 <Col xs={3} className="d-flex align-items-center">
                     {data.Name}

@@ -13,9 +13,15 @@ import {
     Input,
 } from "antd";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
+import Popup from "reactjs-popup";
 
 import PlantContext from "../../context/PlantContext";
+import hhmmToSeconds from "../../functions/dateConversion/hhmmToSeconds";
+import PlanScheduleTooltip from "../../components/Plans/PlanScheduleTooltip";
+import PlanConditionTooltip from "../../components/Plans/PlanConditionTooltip";
+import PlanNameTooltip from "../../components/Plans/PlanNameTooltip";
+import PlanTypeTooltip from "../../components/Plans/PlanTypeTooltip";
+import PlanRangeTooltip from "../../components/Plans/PlanRangeTooltip";
 
 const CreatePlan = () => {
     const navigate = useNavigate();
@@ -27,6 +33,12 @@ const CreatePlan = () => {
             plan.Schedules = plan.Schedules.map((schedule) => ({
                 ...schedule,
                 Time: schedule.Time ? schedule.Time.format("HH:mm") : "",
+            }));
+        }
+        if (Array.isArray(plan.Conditions)) {
+            plan.Conditions = plan.Conditions.map((condition) => ({
+                ...condition,
+                Cooldown: condition.Cooldown ? hhmmToSeconds(condition.Cooldown.format("HH:mm")) : 0,
             }));
         }
         sendRequest(plan, "create_plan");
@@ -50,11 +62,11 @@ const CreatePlan = () => {
                     backgroundColor: "rgba(245, 245, 245, 0.9)",
                     backdropFilter: "blur(2px)",
                     height: "85dvh",
-                    width: "50%",
+                    width: "60%",
                     overflowY: "scroll",
                 }}
             >
-                <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                <Form form={form} layout="vertical" onFinish={handleSubmit} disabled={loading}>
                     <p
                         className="text-center"
                         style={{
@@ -72,11 +84,27 @@ const CreatePlan = () => {
                             <Form.Item
                                 label={
                                     <div className="fs-6">
-                                        <i
-                                            style={{ marginRight: 0.25 + "rem" }}
-                                            className="fa-solid fa-solar-panel"
-                                        ></i>
-                                        Plan name
+                                        <Popup
+                                            trigger={<div>
+                                                <i
+                                                    style={{ marginRight: 0.25 + "rem" }}
+                                                    className="fa-solid fa-solar-panel"
+                                                ></i>
+                                                Plan name{" "}
+                                            </div>
+                                            }
+                                            on={["hover", "focus"]}
+                                            position="right center"
+                                            closeOnDocumentClick
+                                            contentStyle={{
+                                                padding: 0,
+                                                backgroundColor: "rgba(0,0,0,0.0)",
+                                                border: "none",
+                                                boxShadow: "0px 0px 0px"
+                                            }}
+                                        >
+                                            <PlanNameTooltip />
+                                        </Popup>
                                     </div>
                                 }
                                 name="Name"
@@ -92,11 +120,27 @@ const CreatePlan = () => {
                             <Form.Item
                                 label={
                                     <div className="fs-6">
-                                        <i
-                                            style={{ marginRight: 0.25 + "rem" }}
-                                            className="fa-solid fa-seedling"
-                                        ></i>{" "}
-                                        Plant Type
+                                        <Popup
+                                            trigger={<div>
+                                                <i
+                                                    style={{ marginRight: 0.25 + "rem" }}
+                                                    className="fa-solid fa-seedling"
+                                                ></i>
+                                                Plan type
+                                            </div>
+                                            }
+                                            on={["hover", "focus"]}
+                                            position="right center"
+                                            closeOnDocumentClick
+                                            contentStyle={{
+                                                padding: 0,
+                                                backgroundColor: "rgba(0,0,0,0.0)",
+                                                border: "none",
+                                                boxShadow: "0px 0px 0px"
+                                            }}
+                                        >
+                                            <PlanTypeTooltip />
+                                        </Popup>
                                     </div>
                                 }
                                 name="PlantType"
@@ -122,6 +166,10 @@ const CreatePlan = () => {
                                             value: "Lily",
                                             label: "Lily",
                                         },
+                                        {
+                                            value: "Cactus",
+                                            label: "Cactus",
+                                        }
                                     ]}
                                 />
                             </Form.Item>
@@ -133,11 +181,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2rem", marginTop: "1.25rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-temperature-three-quarters"
-                                ></i>
-                                Temperature range (°C)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-temperature-three-quarters"
+                                        ></i>
+                                        Temperature range (°C)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"temperature"}/>
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter temperature range" }]}
@@ -168,11 +232,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-sun"
-                                ></i>
-                                Light level range (%)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-sun"
+                                        ></i>
+                                        Light level range (%)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"light"} />
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter light level range" }]}
@@ -207,11 +287,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-glass-water"
-                                ></i>
-                                Soil humidity range (ml)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-glass-water"
+                                        ></i>
+                                        Soil humidity range (ml)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"soil humidity"} />
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter soil humidity range" }]}
@@ -243,11 +339,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2.75rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-droplet"
-                                ></i>
-                                Moisture range (%)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-droplet"
+                                        ></i>
+                                        Moisture range (%)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"moisture"} />
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter moisture range" }]}
@@ -280,11 +392,30 @@ const CreatePlan = () => {
                     <Form.Item
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: 0.25 + "rem" }}
-                                    className="fa-solid fa-clock"
-                                ></i>
-                                Irrigation schedules
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: 0.25 + "rem" }}
+                                            className="fa-solid fa-clock"
+                                        ></i>
+                                        Irrigation schedules{" "}
+                                        <i
+                                            className="fa-solid fa-question"
+                                        ></i>
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanScheduleTooltip />
+                                </Popup>
                             </div>
                         }
                         style={{ marginTop: 1.25 + "rem" }}
@@ -299,7 +430,7 @@ const CreatePlan = () => {
                                     }}
                                 >
                                     {fields.map((field, index) => (
-                                        <Space key={field.name + toString(index)} align="baseline">
+                                        <Space key={`${field.key}-${index}`} align="baseline">
                                             <Form.Item
                                                 {...field}
                                                 name={[field.name, "Time"]}
@@ -322,7 +453,7 @@ const CreatePlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please enter soil humidity",
+                                                        message: "Please enter value",
                                                     },
                                                 ]}
                                             >
@@ -356,11 +487,30 @@ const CreatePlan = () => {
                     <Form.Item
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: 0.25 + "rem" }}
-                                    className="fa-solid fa-fan"
-                                ></i>
-                                Irrigation conditions
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: 0.25 + "rem" }}
+                                            className="fa-solid fa-fan"
+                                        ></i>
+                                        Irrigation conditions{" "}
+                                        <i
+                                            className="fa-solid fa-question"
+                                        ></i>
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanConditionTooltip />
+                                </Popup>
                             </div>
                         }
                         style={{ marginTop: 1.25 + "rem" }}
@@ -375,7 +525,7 @@ const CreatePlan = () => {
                                     }}
                                 >
                                     {fields.map((field, index) => (
-                                        <Space key={field.name + toString(index)} align="baseline">
+                                        <Space key={`${field.key}-${index}`} align="baseline">
                                             <Form.Item
                                                 {...field}
                                                 name={[field.name, "TargetStat"]}
@@ -417,7 +567,7 @@ const CreatePlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please select direction",
+                                                        message: "Please select type",
                                                     },
                                                 ]}
                                             >
@@ -431,12 +581,12 @@ const CreatePlan = () => {
                                                             label: "",
                                                         },
                                                         {
-                                                            value: "Increasing",
-                                                            label: "Increasing",
+                                                            value: ">",
+                                                            label: "Higher",
                                                         },
                                                         {
-                                                            value: "Decreasing",
-                                                            label: "Decreasing",
+                                                            value: "<",
+                                                            label: "Lower",
                                                         },
                                                     ]}
                                                 />
@@ -447,7 +597,7 @@ const CreatePlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please enter target value",
+                                                        message: "Please enter value",
                                                     },
                                                 ]}
                                             >
@@ -465,7 +615,7 @@ const CreatePlan = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please enter soil humidity",
+                                                        message: "Please enter value",
                                                     },
                                                 ]}
                                             >
@@ -477,7 +627,25 @@ const CreatePlan = () => {
                                                     }}
                                                 />
                                             </Form.Item>
-
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, "Cooldown"]}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please enter value",
+                                                    },
+                                                ]}
+                                            >
+                                                <TimePicker
+                                                    placeholder="Cooldown"
+                                                    format={"HH:mm"}
+                                                    style={{
+                                                        width: 8 + "rem",
+                                                    }}
+                                                    showNow={false}
+                                                />
+                                            </Form.Item>
                                             <CloseOutlined onClick={() => remove(field.name)} />
                                         </Space>
                                     ))}

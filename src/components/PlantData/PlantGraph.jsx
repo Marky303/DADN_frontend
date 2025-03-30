@@ -243,15 +243,15 @@ const PlantGraph = () => {
                         <>
                             <ReferenceLine
                                 y={desiredRange ? desiredRange.min : 0}
-                                stroke="red"
-                                strokeDasharray="5 5"
-                                label={upperLineLegendMap[currentGraph]}
-                            />
-                            <ReferenceLine
-                                y={desiredRange ? desiredRange.max : 0}
                                 stroke="blue"
                                 strokeDasharray="5 5"
                                 label={lowerLineLegendMap[currentGraph]}
+                            />
+                            <ReferenceLine
+                                y={desiredRange ? desiredRange.max : 0}
+                                stroke="red"
+                                strokeDasharray="5 5"
+                                label={upperLineLegendMap[currentGraph]}
                             />
                         </>
                     )}
