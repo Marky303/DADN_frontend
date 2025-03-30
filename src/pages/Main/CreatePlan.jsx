@@ -13,12 +13,15 @@ import {
     Input,
 } from "antd";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
-import Popup from 'reactjs-popup';
+import Popup from "reactjs-popup";
 
 import PlantContext from "../../context/PlantContext";
 import hhmmToSeconds from "../../functions/dateConversion/hhmmToSeconds";
 import PlanScheduleTooltip from "../../components/Plans/PlanScheduleTooltip";
 import PlanConditionTooltip from "../../components/Plans/PlanConditionTooltip";
+import PlanNameTooltip from "../../components/Plans/PlanNameTooltip";
+import PlanTypeTooltip from "../../components/Plans/PlanTypeTooltip";
+import PlanRangeTooltip from "../../components/Plans/PlanRangeTooltip";
 
 const CreatePlan = () => {
     const navigate = useNavigate();
@@ -81,11 +84,27 @@ const CreatePlan = () => {
                             <Form.Item
                                 label={
                                     <div className="fs-6">
-                                        <i
-                                            style={{ marginRight: 0.25 + "rem" }}
-                                            className="fa-solid fa-solar-panel"
-                                        ></i>
-                                        Plan name
+                                        <Popup
+                                            trigger={<div>
+                                                <i
+                                                    style={{ marginRight: 0.25 + "rem" }}
+                                                    className="fa-solid fa-solar-panel"
+                                                ></i>
+                                                Plan name{" "}
+                                            </div>
+                                            }
+                                            on={["hover", "focus"]}
+                                            position="right center"
+                                            closeOnDocumentClick
+                                            contentStyle={{
+                                                padding: 0,
+                                                backgroundColor: "rgba(0,0,0,0.0)",
+                                                border: "none",
+                                                boxShadow: "0px 0px 0px"
+                                            }}
+                                        >
+                                            <PlanNameTooltip />
+                                        </Popup>
                                     </div>
                                 }
                                 name="Name"
@@ -101,11 +120,27 @@ const CreatePlan = () => {
                             <Form.Item
                                 label={
                                     <div className="fs-6">
-                                        <i
-                                            style={{ marginRight: 0.25 + "rem" }}
-                                            className="fa-solid fa-seedling"
-                                        ></i>{" "}
-                                        Plant Type
+                                        <Popup
+                                            trigger={<div>
+                                                <i
+                                                    style={{ marginRight: 0.25 + "rem" }}
+                                                    className="fa-solid fa-seedling"
+                                                ></i>
+                                                Plan type
+                                            </div>
+                                            }
+                                            on={["hover", "focus"]}
+                                            position="right center"
+                                            closeOnDocumentClick
+                                            contentStyle={{
+                                                padding: 0,
+                                                backgroundColor: "rgba(0,0,0,0.0)",
+                                                border: "none",
+                                                boxShadow: "0px 0px 0px"
+                                            }}
+                                        >
+                                            <PlanTypeTooltip />
+                                        </Popup>
                                     </div>
                                 }
                                 name="PlantType"
@@ -146,11 +181,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2rem", marginTop: "1.25rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-temperature-three-quarters"
-                                ></i>
-                                Temperature range (°C)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-temperature-three-quarters"
+                                        ></i>
+                                        Temperature range (°C)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"temperature"}/>
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter temperature range" }]}
@@ -181,11 +232,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-sun"
-                                ></i>
-                                Light level range (%)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-sun"
+                                        ></i>
+                                        Light level range (%)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"light"} />
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter light level range" }]}
@@ -220,11 +287,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-glass-water"
-                                ></i>
-                                Soil humidity range (ml)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-glass-water"
+                                        ></i>
+                                        Soil humidity range (ml)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"soil humidity"} />
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter soil humidity range" }]}
@@ -256,11 +339,27 @@ const CreatePlan = () => {
                         style={{ marginBottom: "2.75rem" }}
                         label={
                             <div className="fs-6">
-                                <i
-                                    style={{ marginRight: "0.25rem" }}
-                                    className="fa-solid fa-droplet"
-                                ></i>
-                                Moisture range (%)
+                                <Popup
+                                    trigger={<div>
+                                        <i
+                                            style={{ marginRight: "0.25rem" }}
+                                            className="fa-solid fa-droplet"
+                                        ></i>
+                                        Moisture range (%)
+                                    </div>
+                                    }
+                                    on={["hover", "focus"]}
+                                    position="right center"
+                                    closeOnDocumentClick
+                                    contentStyle={{
+                                        padding: 0,
+                                        backgroundColor: "rgba(0,0,0,0.0)",
+                                        border: "none",
+                                        boxShadow: "0px 0px 0px"
+                                    }}
+                                >
+                                    <PlanRangeTooltip type={"moisture"} />
+                                </Popup>
                             </div>
                         }
                         rules={[{ required: true, message: "Enter moisture range" }]}
@@ -305,12 +404,12 @@ const CreatePlan = () => {
                                         ></i>
                                     </div>
                                     }
-                                    on={['hover', 'focus']}
-                                    position='right center'
+                                    on={["hover", "focus"]}
+                                    position="right center"
                                     closeOnDocumentClick
                                     contentStyle={{
                                         padding: 0,
-                                        backgroundColor: 'rgba(0,0,0,0.0)',
+                                        backgroundColor: "rgba(0,0,0,0.0)",
                                         border: "none",
                                         boxShadow: "0px 0px 0px"
                                     }}
@@ -400,12 +499,12 @@ const CreatePlan = () => {
                                         ></i>
                                     </div>
                                     }
-                                    on={['hover', 'focus']}
-                                    position='right center'
+                                    on={["hover", "focus"]}
+                                    position="right center"
                                     closeOnDocumentClick
                                     contentStyle={{
                                         padding: 0,
-                                        backgroundColor: 'rgba(0,0,0,0.0)',
+                                        backgroundColor: "rgba(0,0,0,0.0)",
                                         border: "none",
                                         boxShadow: "0px 0px 0px"
                                     }}
