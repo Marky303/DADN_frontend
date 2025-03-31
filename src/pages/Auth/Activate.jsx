@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
@@ -45,7 +45,6 @@ const Activate = () => {
           className="col-6 mx-auto"
           style={{
             marginTop: 180 + "px",
-            backgroundColor: "grey",
             padding: 30 + "px",
             paddingTop: 12 + "px",
             paddingBottom: 12 + "px",
