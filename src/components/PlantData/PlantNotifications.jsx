@@ -16,6 +16,9 @@ import ButtonMUI from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications'
+import Typography from "antd/es/typography/Typography";
+
 const PlantNotifications = () => {
   const { serialID } = useParams();
   const { initializeFirestore } = useContext(PlantContext);
@@ -105,28 +108,47 @@ const PlantNotifications = () => {
   };
 
   return (
-    <Card style={{ height: 80 + "dvh" }}>
+    <Card style={{ width: "100%", height: "100%" }} className="p-0 m-0">
       <Card.Header
         style={{ background: "#e6e6e6" }}
-        className="d-flex align-items-center"
+        className="d-flex align-items-center flex-wrap"
       >
-        <i className="fa-solid fa-bell"></i>&nbsp;Notifications&nbsp;
-        {unseenCount != 0 ? (
-          <Badge
-            className="p-0 px-1 pb-1"
-            style={{
-              fontSize: 15 + "px",
-              height: 23 + "px",
-              lineHeight: 23 + "px",
-            }}
-            bg="danger"
-          >
-            {unseenCount}
-          </Badge>
-        ) : (
-          ""
-        )}
-        <Box sx={{ display: "flex", gap: 2, ml: "auto" }}>
+        <div className="d-flex align-items-center">
+          <Typography sx={{
+            display: "flex",
+            alignItems: "center",
+          }}>
+            <CircleNotificationsIcon sx={{
+                fontSize: '20px',
+                marginRight: '5px',
+              }}
+            />
+            Notifications
+          </Typography>
+          {unseenCount !== 0 && (
+            <Badge
+              className="p-0 px-1 pb-1"
+              style={{
+                fontSize: "15px",
+                height: "23px",
+                lineHeight: "23px",
+              }}
+              bg="danger"
+            >
+              {unseenCount}
+            </Badge>
+          )}
+        </div>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            ml: "auto",
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
           <ButtonMUI
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
@@ -150,23 +172,23 @@ const PlantNotifications = () => {
             <MenuItem onClick={() => handleFilter("warning")}>Warning</MenuItem>
           </Menu>
 
-          <Button
+          {(unseenCount != 0) && <Button
             data-tooltip-id="markAsReadTooltip"
             data-tooltip-content="Mark as read"
             onClick={handleMarkAsRead}
-            style={{ width: 35 + "px" }}
-            className="ms-auto p-1 d-flex justify-content-center align-items-center"
+            style={{ width: 25 + "px", height: 25 + "px" }}
+            className="p-1 d-flex justify-content-center align-items-center"
           >
             <Tooltip id="markAsReadTooltip" />
             <i className="fa-solid fa-check"></i>
-          </Button>
+          </Button>}
         </Box>
       </Card.Header>
       <Card.Body
         className="p-3 pt-2"
-        style={{ maxHeight: 100 + "%", overflowY: "auto" }}
+        style={{ maxHeight: "100%", overflowY: "auto" }}
       >
-        {notifications && notifications.length != 0
+        {notifications && notifications.length !== 0
           ? notifications.map((notification, index) => (
               <Notification
                 key={index}
@@ -176,7 +198,7 @@ const PlantNotifications = () => {
                 seen={notification.Seen}
               ></Notification>
             ))
-          : ""}
+          : <div className="text-center text-muted">No notifications available</div>}
       </Card.Body>
     </Card>
   );

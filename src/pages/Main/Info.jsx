@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthContext from "../../context/UserauthContext";
 import Box from "@mui/material/Box";
-import theme from "../../theme";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -30,7 +29,7 @@ const PersonalInfo = () => {
   // Lấy dữ liệu người dùng từ API khi component mount
   useEffect(() => {
     sendRequest(0, "info");
-  }, []);
+  }, [sendRequest]);
 
   // Load dữ liệu người dùng vào form khi component mount
   useEffect(() => {
@@ -65,21 +64,18 @@ const PersonalInfo = () => {
   return (
     <Box
       sx={{
-        height: `calc(100vh - ${theme.trello.appBarHeight})`,
-        backgroundColor: "primary.main",
-        paddingBottom: "50px",
+        // height: `calc(100vh - ${theme.trello.appBarHeight})`,
+        width: "100%",
+        overflowY: "auto"
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          padding: "20px",
-          backgroundColor: "primary.main",
-          borderRadius: "10px",
-        }}
-      >
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflowY: 'auto',
+      }}>
         {/* Ảnh đại diện */}
         <Box
           sx={{
@@ -87,53 +83,50 @@ const PersonalInfo = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "20px",
-            borderRadius: "10px",
-            backgroundColor: "primary.main",
-            width: "20%",
-            margin: "20px",
+            mt: 3
           }}
         >
           <Avatar
             alt="Profile"
             src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t39.30808-6/472216957_1924617648026190_5823984232582036858_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGhfUvwlJn7Uq3b3j5yplmEl_szgKf1KTKX-zOAp_UpMth3c9rqnFKjlwb9ZUEAgNnkW60p7eSV_D8onxTLgx7L&_nc_ohc=0h4Sn3echA0Q7kNvgFngwZE&_nc_oc=AdkIYl5DxlAZFX6kZ0utWqOs1LwrsRYRAkDMTJPYh8J8acQpvM-HrjlupfKagqtT-70&_nc_zt=23&_nc_ht=scontent.fsgn5-9.fna&_nc_gid=2FUrLzxo5RY-w2oYgzzNhQ&oh=00_AYHREaJ1rBjv3TB8ZQ1GuBzjbFceT7ptiO4AFk1qtgC83g&oe=67E96688"
-            sx={{ width: 150, height: 150 }}
-          />
-          <Button
             sx={{
-              marginTop: "25px",
-              backgroundColor: "#0D6EFD",
+              width: 220,
+              height: 220,
+
+            }}
+          />
+          { isEditing && <Button
+            sx={{
+              mt: 4,
+              backgroundColor: "primary.main",
               color: "white",
             }}
             component="label"
             role={undefined}
             variant="contained"
             tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
+            startIcon={<CloudUploadIcon/>}
           >
             Upload
             <VisuallyHiddenInput type="file" />
-          </Button>
+          </Button>}
         </Box>
 
         {/* Thông tin cá nhân */}
         <Box
           sx={{
             display: "flex",
+            width: "100%",
             flexDirection: "column",
-            width: "80%",
-            padding: "20px",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            margin: "20px",
+            p: 3,
+            mt: 2,
           }}
         >
-          <h2 className="text-primary mb-3">Personal Information</h2>
           <form onSubmit={(e) => handleSubmit(e)}>
             {/* Name & Email */}
             <div className="row mt-2">
               <div className="col-md-6">
-                <Typography variant="h6" component="h2" sx={{ color: "black" }}>
+                <Typography variant="h6">
                   Name
                 </Typography>
                 <input
@@ -145,7 +138,7 @@ const PersonalInfo = () => {
                 />
               </div>
               <div className="col-md-6">
-                <Typography variant="h6" component="h2" sx={{ color: "black" }}>
+                <Typography variant="h6">
                   Email
                 </Typography>
                 <input
@@ -161,7 +154,7 @@ const PersonalInfo = () => {
             {/* Gender & Date of Birth */}
             <div className="row mt-3">
               <div className="col-md-6">
-                <Typography variant="h6" component="h2" sx={{ color: "black" }}>
+                <Typography variant="h6">
                   Gender
                 </Typography>
                 <select
@@ -181,7 +174,7 @@ const PersonalInfo = () => {
               </div>
 
               <div className="col-md-6">
-                <Typography variant="h6" component="h2" sx={{ color: "black" }}>
+                <Typography variant="h6">
                   Date of Birth
                 </Typography>
                 <input
@@ -197,7 +190,7 @@ const PersonalInfo = () => {
             {/* Phone & Address */}
             <div className="row mt-3">
               <div className="col-md-6">
-                <Typography variant="h6" component="h2" sx={{ color: "black" }}>
+                <Typography variant="h6">
                   Phone Number
                 </Typography>
                 <input
@@ -209,7 +202,7 @@ const PersonalInfo = () => {
                 />
               </div>
               <div className="col-md-6">
-                <Typography variant="h6" component="h2" sx={{ color: "black" }}>
+                <Typography variant="h6">
                   Address
                 </Typography>
                 <input
@@ -229,7 +222,7 @@ const PersonalInfo = () => {
                   <Button
                     sx={{
                       marginRight: "10px",
-                      backgroundColor: "#6C757D",
+                      backgroundColor: 'red',
                       color: "white",
                     }}
                     onClick={() => setIsEditing(false)}
@@ -237,7 +230,7 @@ const PersonalInfo = () => {
                     Cancel
                   </Button>
                   <Button
-                    sx={{ backgroundColor: "#198754", color: "white" }}
+                    sx={{ backgroundColor: "#0D6EFD", color: "white" }}
                     type="submit"
                   >
                     Save
@@ -250,7 +243,6 @@ const PersonalInfo = () => {
                     backgroundColor: "#0D6EFD",
                     color: "white",
                   }}
-                  component="label"
                   role={undefined}
                   variant="contained"
                   tabIndex={-1}

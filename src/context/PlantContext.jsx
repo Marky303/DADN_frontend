@@ -9,6 +9,8 @@ import AuthContext from "./UserauthContext";
 
 import notify from "../functions/toastify/notify";
 import { current } from "@reduxjs/toolkit";
+import Box from "@mui/material/Box";
+import theme from "../theme";
 
 const PlantContext = createContext();
 
@@ -361,8 +363,14 @@ export const PlantProvider = () => {
   };
 
   return (
-    <PlantContext.Provider value={contextData}>
-      {<Outlet />}
-    </PlantContext.Provider>
+    <Box sx={{
+      height: `calc(100vh - ${theme.trello.appBarHeight} - 20px)`,
+      width: "100%",
+      overflowY: "auto",
+    }}>
+      <PlantContext.Provider value={contextData}>
+        {<Outlet />}
+      </PlantContext.Provider>
+    </Box>
   );
 };

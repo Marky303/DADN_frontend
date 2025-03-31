@@ -9,8 +9,6 @@ import PrivateRouteCheck from "./hocs/PrivateRouteCheck";
 
 // Import hocs
 import Layout from "./hocs/Layout";
-import ChatBubbleLayout from "./hocs/ChatBubbleLayout";
-
 // Import main pages
 import Home from "./pages/Home";
 
