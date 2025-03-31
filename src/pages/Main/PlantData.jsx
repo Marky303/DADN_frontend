@@ -3,11 +3,13 @@ import PlantGraph from "../../components/PlantData/PlantGraph";
 import PlantNotifications from "../../components/PlantData/PlantNotifications";
 
 import Box from "@mui/material/Box";
+import theme from "../../theme";
 
 const PlantData = () => {
   return (
     <Box
       sx={{
+        height: theme.trello.homeHeight,
         display: "flex",
         flexDirection: "column",
         p: 2

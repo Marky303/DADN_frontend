@@ -1,19 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 
 // Import bootstraps components
 import Container from "react-bootstrap/esm/Container";
-import Row from "react-bootstrap/esm/Row";
-import Form from "react-bootstrap/Form";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import Carousel from "react-bootstrap/Carousel";
-
 // Import ReactTyped tag
 import { ReactTyped } from "react-typed";
 
 // Import pie chart tag
-import { PieChart } from "@mui/x-charts/PieChart";
-import { BarChart } from "@mui/x-charts/BarChart";
-import Col from "react-bootstrap/esm/Col";
+import theme from "../theme";
 
 // App praises
 const praises = [
@@ -27,30 +20,16 @@ const praises = [
   "efficient",
   "simpler",
 ];
-
-// Pie graph settings
-const pieParams = { height: 200, margin: { right: 5 } };
-const palette = ["orange", "blue", "darkcyan", "lightblue"];
-const data = [
-  { label: "Pie", value: 400 },
-  { label: "Different pie", value: 300 },
-  { label: "Another pie", value: 300 },
-  { label: "Not pie", value: 200 },
-];
-
 const Home = () => {
-  // Change active pie section display
-  const [itemData, setItemData] = useState(null);
-
   return (
     <Container
       className="heroimage-background"
       style={{
+        height: theme.trello.homeHeight,
         backgroundImage: "url(/src/assets/hero.jpg)", // đường dẫn tới file hình ảnh
         backgroundPosition: "center center",
         backgroundSize: "100%",
         maxWidth: 100 + "%",
-        height: 120 + "dvh",
         margin: 0 + "px",
         padding: 0 + "px",
       }}

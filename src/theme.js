@@ -1,10 +1,14 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
 // import { deepOrange } from '@mui/material/colors'
 
+const APP_BAR_HEIGHT = 70
+const HOME_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT}px)`
+
 // Create a theme instance.
 const theme = extendTheme({
   trello:{
-    appBarHeight: '50px'
+    appBarHeight: APP_BAR_HEIGHT,
+    homeHeight: HOME_HEIGHT
   },
   palette: {
     primary: {

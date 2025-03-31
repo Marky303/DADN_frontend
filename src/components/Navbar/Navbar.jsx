@@ -21,6 +21,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { useNavigate } from "react-router-dom";
+import theme from "../../theme";
 
 // Route -> Nav link highlight dictionary
 const dict = {
@@ -121,7 +122,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ height: theme.trello.appBarHeight, alignItems: "center", justifyContent: "center" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <GrassIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

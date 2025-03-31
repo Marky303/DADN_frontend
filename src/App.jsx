@@ -10,7 +10,7 @@ import PrivateRouteCheck from "./hocs/PrivateRouteCheck";
 // Import hocs
 import Layout from "./hocs/Layout";
 // Import main pages
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 
 // Import introduction pages
 import Features from "./pages/Intro/Features";
@@ -44,7 +44,7 @@ const App = () => (
       <Route exact path="/" element={<UserauthProvider />}>
         <Route exact path="/" element={<PrivateRouteCheck />}>
           <Route exact path="/" element={<Layout />}>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<Login />} />
             <Route exact path="/features" element={<Features />} />
             <Route exact path="/pricing" element={<Pricing />} />
             <Route exact path="/login" element={<Login />} />

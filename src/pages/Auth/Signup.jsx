@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import AuthContext from "../../context/UserauthContext";
+import theme from "../../theme";
 
 function Writing({ labelName, type, name, placeholder, loading }) {
   return (
@@ -41,29 +42,27 @@ const Signup = () => {
   return (
     <Container
       style={{
+        width: "100%",
         background: "url(/src/assets/background.jpg)",
         backgroundPosition: "center center",
         backgroundSize: "cover",
+        height: theme.trello.homeHeight,
+        overflowY: "auto",
         maxWidth: 100 + "%",
-        height: 120 + "dvh",
-        margin: 0 + "px",
       }}
     >
       <Row>
         <div
           className="col-4 mx-auto"
           style={{
-            marginTop: 20 + "px",
-            backgroundColor: "grey",
+            minWidth: 350 + "px",
+            margin: 40 + "px",
             padding: 30 + "px",
             paddingTop: 12 + "px",
             paddingBottom: 12 + "px",
             borderRadius: 10 + "px",
             backgroundColor: "rgba(0,0,0,0.5)",
             backdropFilter: "blur(2px)",
-            width: "40%",      // Đảm bảo không bị giới hạn chiều rộng
-            maxHeight: "90vh",  // Giới hạn chiều cao để có thể cuộn nếu cần
-            overflowY: "auto",  // Nếu form quá dài, nó có thể cuộn riêng
           }}
         >
           <Form onSubmit={(e) => handleSubmit(e)}>

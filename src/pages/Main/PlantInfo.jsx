@@ -7,14 +7,15 @@ import PlantSoilHumidity from "../../components/PlantInfo/PlantSoilHumidity";
 import PlantNotifications from "../../components/PlantInfo/PlantNotifications";
 import PlantHeader from "../../components/PlantInfo/PlantHeader";
 
+import theme from "../../theme";
+
 const PlantInfo = () => {
   return (
     <div
       style={{
-        height: "100%",
-        padding: 15 + "px",
-        paddingTop: 3 + "px",
-        backgroundColor: "rgb(237, 237, 237, 0.7)",
+        height: theme.trello.homeHeight,
+        padding: '20px 20px 0 20px',
+        backgroundColor: "#EEE"
       }}
     >
       <PlantHeader></PlantHeader>

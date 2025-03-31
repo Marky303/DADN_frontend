@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import theme from "../../theme";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -64,9 +65,9 @@ const PersonalInfo = () => {
   return (
     <Box
       sx={{
-        // height: `calc(100vh - ${theme.trello.appBarHeight})`,
+        height: theme.trello.homeHeight,
         width: "100%",
-        overflowY: "auto"
+        overflowY: "auto",
       }}
     >
       <Box sx={{

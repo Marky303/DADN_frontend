@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -138,6 +138,7 @@ const PlantGraph = () => {
         backgroundColor: "white",
         borderRadius: "10px",
         marginRight: 15 + "px",
+        border: "1px solid #ccc",
       }}
       className="p-1 pt-3"
     >

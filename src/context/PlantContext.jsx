@@ -364,7 +364,6 @@ export const PlantProvider = () => {
 
   return (
     <Box sx={{
-      height: `calc(100vh - ${theme.trello.appBarHeight} - 20px)`,
       width: "100%",
       overflowY: "auto",
     }}>

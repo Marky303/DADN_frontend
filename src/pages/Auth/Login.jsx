@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,6 +6,8 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/Row";
 
 import AuthContext from "../../context/UserauthContext";
+import theme from "../../theme";
+
 
 const Login = () => {
   let { sendRequest, loading } = useContext(AuthContext);
@@ -20,20 +22,21 @@ const Login = () => {
   return (
     <Container
       style={{
+        width: "100%",
         background: "url(/src/assets/background.jpg)",
         backgroundPosition: "center center",
         backgroundSize: "cover",
+        height: theme.trello.homeHeight,
+        overflowY: "auto",
         maxWidth: 100 + "%",
-        height: 120 + "dvh",
-        margin: 0 + "px",
       }}
     >
       <Row>
         <div
           className="col-4 mx-auto"
           style={{
-            marginTop: 40 + "px",
-            backgroundColor: "grey",
+            minWidth: 300 + "px",
+            margin: 40 + "px",
             padding: 30 + "px",
             paddingTop: 12 + "px",
             paddingBottom: 12 + "px",
@@ -47,9 +50,9 @@ const Login = () => {
               className="text-center"
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
-                margin: 0 + "px",
-                marginBottom: 5 + "px",
+                fontSize: "40px",
+                margin: 10 + "px",
+                marginBottom: 30 + "px",
                 color: "white",
               }}
             >
@@ -60,6 +63,7 @@ const Login = () => {
               <Form.Label
                 style={{
                   color: "white",
+                  fontSize: "20px",
                 }}
               >
                 <i className="fa-solid fa-envelope"></i> Email address
@@ -76,6 +80,7 @@ const Login = () => {
               <Form.Label
                 style={{
                   color: "white",
+                  fontSize: "20px",
                 }}
               >
                 <i className="fa-solid fa-key"></i> Password
@@ -115,7 +120,7 @@ const Login = () => {
                 color: "white",
               }}
             >
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <a
                 href="/signup"
                 style={{

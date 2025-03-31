@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import theme from "../../theme";
 
 import Button from "react-bootstrap/Button";
 import PlantCard from "../../components/Plants/PlantCard";
@@ -10,6 +9,7 @@ import PlantContext from "../../context/PlantContext";
 import PlantRegister from "../../components/Plants/PlantRegister";
 
 import Box from "@mui/material/Box";
+import theme from "../../theme";
 
 const Plants = () => {
   const { sendRequest, plantList } = useContext(PlantContext);
@@ -23,7 +23,7 @@ const Plants = () => {
   return (
     <Box
       sx={{
-        height: "100%",
+        height: theme.trello.homeHeight,
         width: "100%",
         overflowY: "auto",
         backgroundColor: "#EEE", // Nền sáng giúp nổi bật
