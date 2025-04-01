@@ -11,6 +11,7 @@ import PrivateRouteCheck from "./hocs/PrivateRouteCheck";
 import Layout from "./hocs/Layout";
 // Import main pages
 // import Home from "./pages/Home";
+import ChatBubbleLayout from "./hocs/ChatBubbleLayout";
 
 // Import introduction pages
 import Features from "./pages/Intro/Features";
@@ -52,17 +53,19 @@ const App = () => (
             <Route exact path="/activate/:uid/:token" element={<Activate />} />
 
             <Route exact path="/" element={<PlantProvider />}>
-              <Route exact path="/dashboard" element={<Dashboard />} />
-              <Route exact path="/info" element={<Info />} />
+              <Route exact path="/" element={<ChatBubbleLayout />}>
+                <Route exact path="/dashboard" element={<Dashboard />} />
+                <Route exact path="/info" element={<Info />} />
 
-              <Route exact path="/plants" element={<Plants />} />
-              <Route exact path="/plants/:serialID" element={<PlantInfo />} />
-              <Route exact path="/plants/:serialID/data" element={<PlantData />} />
-              <Route exact path="/plants/:serialID/settings" element={<PlantSettings />} />
+                <Route exact path="/plants" element={<Plants />} />
+                <Route exact path="/plants/:serialID" element={<PlantInfo />} />
+                <Route exact path="/plants/:serialID/data" element={<PlantData />} />
+                <Route exact path="/plants/:serialID/settings" element={<PlantSettings />} />
 
-              <Route exact path="/plans" element={<Plans />} />
-              <Route exact path="/plans/createplan" element={<CreatePlan />} />
-              <Route exact path="/plans/editplan/:id" element={<EditPlan />} />
+                <Route exact path="/plans" element={<Plans />} />
+                <Route exact path="/plans/createplan" element={<CreatePlan />} />
+                <Route exact path="/plans/editplan/:id" element={<EditPlan />} />
+              </Route>
             </Route>
           </Route>
         </Route>
