@@ -32,6 +32,8 @@ export const PlantProvider = () => {
 
   let [loading, setLoading] = useState(false);
 
+  let [chatID, setChatID] = useState(null);
+
   // FUNCTIONS
   const sendRequest = async (e, requestType) => {
     setLoading(true);
@@ -65,6 +67,10 @@ export const PlantProvider = () => {
           break;
         case "disown_pot":
           await disownPot(e);
+          break;
+        // Chat AI
+        case "send_message":
+          await sendMessage(e);
           break;
         default:
           throw new Error("Request type undefined");
@@ -226,7 +232,7 @@ export const PlantProvider = () => {
   const deletePlan = async (planID) => {
     const body = {
       planID
-    }
+    };
 
     const response = await axios.post(
       import.meta.env.VITE_BACKEND_DELETE_PLAN_ENDPOINT,
@@ -244,10 +250,10 @@ export const PlantProvider = () => {
     } else {
       throw e;
     }
-  }
+  };
 
   const copyPlan = async (plan) => {
-    const body = plan
+    const body = plan;
     body.Name = "(Copy) " + body.Name;
 
     const response = await axios.post(
@@ -266,7 +272,7 @@ export const PlantProvider = () => {
     } else {
       throw e;
     }
-  }
+  };
 
   const editplan = async (plan) => {
     const body = {
@@ -322,12 +328,12 @@ export const PlantProvider = () => {
     } else {
       throw e;
     }
-  }
+  };
 
   const disownPot = async (e) => {
     const body = {
       serialID: e.target.serialID.value
-    }
+    };
 
     const response = await axios.post(
       import.meta.env.VITE_BACKEND_DISOWN_POT_ENDPOINT,
@@ -345,7 +351,33 @@ export const PlantProvider = () => {
     } else {
       throw e;
     }
-  }
+  };
+
+  const sendMessage = async (e) => {
+    let body = {
+      query: e
+    };
+    if (chatID != null) {
+      body.documentID = chatID;
+    }
+
+    const response = await axios.post(
+      import.meta.env.VITE_BACKEND_ASSISTANT_ENDPOINT,
+      body,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      setChatID(response.data.documentID);
+    } else {
+      throw e;
+    }
+
+  };
 
   // EXPORT
   const contextData = {
@@ -354,6 +386,7 @@ export const PlantProvider = () => {
     plantList: plantList,
     currentGraph: currentGraph,
     planList: planList,
+    chatID: chatID,
 
     // Functions
     sendRequest: sendRequest,

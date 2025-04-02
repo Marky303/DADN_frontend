@@ -6,22 +6,28 @@ import PlantMoisture from "../../components/PlantInfo/PlantMoisture";
 import PlantSoilHumidity from "../../components/PlantInfo/PlantSoilHumidity";
 import PlantNotifications from "../../components/PlantInfo/PlantNotifications";
 import PlantHeader from "../../components/PlantInfo/PlantHeader";
+import Box from "@mui/material/Box";
 
 import theme from "../../theme";
 
 const PlantInfo = () => {
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         height: theme.trello.homeHeight,
-        padding: '20px 20px 0 20px',
-        backgroundColor: "#EEE"
+        padding: '20px 20px 20px 20px',
+        backgroundColor: "background.main",
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        boxSizing: 'border-box',
+        overflow: 'auto'
       }}
     >
       <PlantHeader></PlantHeader>
 
-      <div
-        style={{
+      <Box
+        sx={{
           display: "grid",
           gridTemplateColumns:
             "2fr 1fr" /* Chia thành 2 cột: 2 phần thông số - 1 phần Notifications */,
@@ -29,8 +35,8 @@ const PlantInfo = () => {
         }}
       >
         {/* Cột trái: Các thông số cây (Plant Parameters) */}
-        <div
-          style={{
+        <Box
+          sx={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gap: "15px",
@@ -41,17 +47,17 @@ const PlantInfo = () => {
           <PlantLight />
           <PlantSoilHumidity />
           <PlantMoisture />
-        </div>
+        </Box>
 
         {/* Cột phải: Notifications */}
         <PlantNotifications />
-      </div>
+      </Box>
 
       {/* Graph nằm hàng dưới, chiếm toàn bộ chiều rộng */}
-      <div style={{ marginTop: "20px" }}>
+      <Box sx={{ marginTop: "20px" }}>
         <PlantGraph />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

@@ -10,8 +10,12 @@ const PlantData = () => {
     <Box
       sx={{
         height: theme.trello.homeHeight,
+        backgroundColor: "background.main",
         display: "flex",
         flexDirection: "column",
+        width: '100%',
+        boxSizing: 'border-box',
+        overflow: 'auto',
         p: 2
       }}
     >

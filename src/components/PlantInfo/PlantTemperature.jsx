@@ -19,6 +19,7 @@ const PlantTemperature = () => {
 
   let [value, setValue] = useState(null);
   const [desiredRange, setDesiredRange] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchdesiredRange = async () => {
@@ -81,15 +82,22 @@ const PlantTemperature = () => {
     <Card
       ref={ref}
       onClick={handleGraphChange}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         backgroundColor: "#FFA500",
         transition: "transform 0.15s ease, box-shadow 0.15s ease",
         cursor: "pointer",
+        transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+        boxShadow: isHovered ? '0px 10px 20px rgba(0, 0, 0, 0.2)' : '0px 4px 8px rgba(0, 0, 0, 0.1)',
       }}
       className="p-3 px-3"
     >
       <Row className="align-items-center h-100">
-        <Col xs={8} className="d-flex align-items-center h-100 d-none d-xl-flex">
+        <Col
+          xs={8}
+          className="d-flex align-items-center h-100 d-none d-xl-flex"
+        >
           <div>
             <h4
               style={{
@@ -103,18 +111,28 @@ const PlantTemperature = () => {
                 maxWidth: "100%",
               }}
             >
-              <i className="fa-solid fa-temperature-three-quarters"></i> Temperature
+              <i className="fa-solid fa-temperature-three-quarters"></i>{" "}
+              Temperature
               {value != null && desiredRange != null ? (
                 value >= desiredRange.min && value <= desiredRange.max ? (
-                  <Badge style={{ fontSize: "14px", minWidth: "50px" }} bg="success">
+                  <Badge
+                    style={{ fontSize: "14px", minWidth: "50px" }}
+                    bg="success"
+                  >
                     OK
                   </Badge>
                 ) : value < desiredRange.min ? (
-                  <Badge style={{ fontSize: "14px", minWidth: "50px" }} bg="danger">
+                  <Badge
+                    style={{ fontSize: "14px", minWidth: "50px" }}
+                    bg="danger"
+                  >
                     Cold
                   </Badge>
                 ) : (
-                  <Badge style={{ fontSize: "14px", minWidth: "50px" }} bg="danger">
+                  <Badge
+                    style={{ fontSize: "14px", minWidth: "50px" }}
+                    bg="danger"
+                  >
                     Hot
                   </Badge>
                 )
@@ -123,11 +141,16 @@ const PlantTemperature = () => {
               )}
             </h4>
             <small style={{ fontSize: "1rem", fontWeight: 500 }}>
-              Desired range: {desiredRange ? desiredRange.min : ""}°C - {desiredRange ? desiredRange.max : ""}°C
+              Desired range: {desiredRange ? desiredRange.min : ""}°C -{" "}
+              {desiredRange ? desiredRange.max : ""}°C
             </small>
           </div>
         </Col>
-        <Col xs={12} md={4} className="d-flex align-items-center justify-content-center h-100">
+        <Col
+          xs={12}
+          md={4}
+          className="d-flex align-items-center justify-content-center h-100"
+        >
           <p
             style={{
               fontSize: "2.0rem",

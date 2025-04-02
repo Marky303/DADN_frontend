@@ -65,6 +65,7 @@ const PlantGraph = () => {
         backgroundColor: "white",
         padding: "15px",
         borderRadius: "10px",
+        color: "black" // Added this line to make text color black
       }}
     >
       <div className="d-flex justify-content-between align-items-center px-2">

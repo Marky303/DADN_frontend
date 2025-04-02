@@ -1,37 +1,40 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { Row, Col, Card, Badge, Button } from "react-bootstrap";
-import { Tooltip } from 'react-tooltip'
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import PlantSettings from "../PlantSetting/PlantSettings";
+import PlantDisOwn from "../PlantDisOwn/PlantDisOwn";
 
 import PlantContext from "../../context/PlantContext";
 
 const PlantHeader = () => {
-    const navigate = useNavigate();
-    const { serialID } = useParams();
-    const { getPlantName } = useContext(PlantContext);
+  const navigate = useNavigate();
+  const { serialID } = useParams();
+  const { getPlantName } = useContext(PlantContext);
 
-    return (
-        <div className="d-flex align-items-center">
-            <h1>Plant Data - {getPlantName(serialID)}</h1>
-            <div className="ms-auto d-flex gap-2">
-                <Button
-                    data-tooltip-id="plantDashboardTooltip"
-                    data-tooltip-content="Dashboard"
-                    style={{ borderColor: "#878787", backgroundColor: "#b3b3b3", height: 37 + "px", width: 37 + "px" }}
-                    className="p-0 d-flex justify-content-center align-items-center"
-                    onClick={() => navigate("/plants/" + serialID)}
-                >
-                    <Tooltip id="plantDashboardTooltip" />
-                    <i className="fa-solid fa-chart-simple"></i>
-                </Button>
-                <PlantSettings/>
-
-            </div>
-        </div>
-    );
+  return (
+    <div className="d-flex align-items-center">
+      <h1>Plant Data - {getPlantName(serialID)}</h1>
+      <div className="ms-auto d-flex gap-2">
+        <Tooltip title="Dashboard">
+          <Button
+            onClick={() => navigate("/plants/" + serialID )}
+            sx={{
+              backgroundColor: "primary.main",
+              "&:hover": { backgroundColor: "primary.dark" },
+            }}
+          >
+            <DashboardIcon sx={{ color: "white" }} />
+          </Button>
+        </Tooltip>
+        <PlantSettings />
+        <PlantDisOwn />
+      </div>
+    </div>
+  );
 };
 
 export default PlantHeader;

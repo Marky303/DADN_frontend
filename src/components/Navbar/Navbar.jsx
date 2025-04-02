@@ -15,13 +15,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import GrassIcon from "@mui/icons-material/Grass";
-import { Divider, ListItemIcon, ListItemText } from "@mui/material";
+import { Divider, ListItemIcon, ListItemText, useTheme } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { useNavigate } from "react-router-dom";
 import theme from "../../theme";
+import ModeSelect from "./ModeSelect/ModeSelect";
 
 // Route -> Nav link highlight dictionary
 const dict = {
@@ -29,12 +30,17 @@ const dict = {
   "/dashboard": "navlink-dashboard",
   "/plants": "navlink-plants",
   "/plans": "navlink-plans",
-  "/info": "navlink-account"
+  "/info": "navlink-account",
 };
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const muiTheme = useTheme(); // Get current theme
+  const isDarkMode = muiTheme.palette.mode === 'dark';
+  const textColor = isDarkMode ? 'white' : 'black';
+  const leftNavTextColor = 'white'; // Always white for left nav
+  const highlightColor = "#ff793f";
 
   // Get functions + variables from contexts
   let { accessToken, logout } = useContext(AuthContext);
@@ -45,21 +51,25 @@ function ResponsiveAppBar() {
     if (dict[location] && document.getElementsByClassName(dict[location])[0]) {
       // Highlight
       let e = document.getElementsByClassName(dict[location])[0];
-      e.style.color = "#ff793f";
+      e.style.color = highlightColor;
       // Remove highlight from other elements
       for (let i in dict) {
         if (i !== location) {
           let e = document.getElementsByClassName(dict[i])[0];
           if (e) {
-            e.style.color = "white";
-            if (i === "/info") {
-              e.style.color = "black";
+            // Use white for left nav items
+            if (dict[i].includes('navlink-dashboard') || 
+                dict[i].includes('navlink-plants') || 
+                dict[i].includes('navlink-plans')) {
+              e.style.color = leftNavTextColor;
+            } else {
+              e.style.color = textColor;
             }
           }
         }
       }
     }
-  }, [location]);
+  }, [location, textColor]);
 
   // Logout
   const handleLogout = () => {
@@ -122,15 +132,34 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ height: theme.trello.appBarHeight, alignItems: "center", justifyContent: "center" }}>
+    <AppBar
+      position="static"
+      sx={{
+        height: theme.trello.appBarHeight,
+        alignItems: "center",
+        justifyContent: "center",
+        color: textColor,
+        '&.MuiAppBar-root': {
+          bgcolor: "primary.main"
+        }
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <GrassIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <GrassIcon
+            sx={{
+              display: { xs: "none", md: "flex" },
+              mr: 1,
+              "&.MuiSvgIcon-root": {
+                color: leftNavTextColor, // Always white
+              },
+            }}
+          />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/dashboard"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -139,50 +168,74 @@ function ResponsiveAppBar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              "&.MuiTypography-root": {
+                color: leftNavTextColor, // Always white
+              },
             }}
           >
             {import.meta.env.VITE_APPLICATION_NAME}
           </Typography>
 
-          { accessToken && <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              <MenuItem key={"Dashboard"} onClick={HandleClickDashboard}>
-                <Typography sx={{ textAlign: "center" }} className="navlink-dashboard">Dashboard</Typography>
-              </MenuItem>
-              <MenuItem key={"Plants"} onClick={HandleClickPlants}>
-                <Typography sx={{ textAlign: "center" }} className="navlink-plants">Plants</Typography>
-              </MenuItem>
-              <MenuItem key={"Plans"} onClick={HandleClickPlans}>
-                <Typography sx={{ textAlign: "center" }} className="navlink-plans">Plans</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>}
-          <GrassIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          {accessToken && (
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
+                <MenuItem key={"Dashboard"} onClick={HandleClickDashboard}>
+                  <Typography
+                    sx={{ textAlign: "center" }}
+                    className="navlink-dashboard"
+                  >
+                    Dashboard
+                  </Typography>
+                </MenuItem>
+                <MenuItem key={"Plants"} onClick={HandleClickPlants}>
+                  <Typography
+                    sx={{ textAlign: "center" }}
+                    className="navlink-plants"
+                  >
+                    Plants
+                  </Typography>
+                </MenuItem>
+                <MenuItem key={"Plans"} onClick={HandleClickPlans}>
+                  <Typography
+                    sx={{ textAlign: "center" }}
+                    className="navlink-plans"
+                  >
+                    Plans
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
+          <GrassIcon sx={{ 
+            display: { xs: "flex", md: "none" }, 
+            mr: 1,
+            color: leftNavTextColor // Always white
+          }} />
           <Typography
             variant="h4"
             noWrap
@@ -195,7 +248,7 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: leftNavTextColor, // Always white
               textDecoration: "none",
             }}
           >
@@ -207,7 +260,7 @@ function ResponsiveAppBar() {
                 key={"Dashboard"}
                 className="navlink-dashboard"
                 onClick={HandleClickDashboard}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: leftNavTextColor, display: "block" }}
               >
                 Dashboard
               </Button>
@@ -215,7 +268,7 @@ function ResponsiveAppBar() {
                 key={"Plants"}
                 className="navlink-plants"
                 onClick={HandleClickPlants}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: leftNavTextColor, display: "block" }}
               >
                 Plants
               </Button>
@@ -223,7 +276,7 @@ function ResponsiveAppBar() {
                 key={"Plans"}
                 className="navlink-plans"
                 onClick={HandleClickPlans}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: leftNavTextColor, display: "block" }}
               >
                 Plans
               </Button>
@@ -234,86 +287,99 @@ function ResponsiveAppBar() {
             ></Box>
           )}
           {/* Right Navbar */}
-          {accessToken ? (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t39.30808-6/472216957_1924617648026190_5823984232582036858_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGhfUvwlJn7Uq3b3j5yplmEl_szgKf1KTKX-zOAp_UpMth3c9rqnFKjlwb9ZUEAgNnkW60p7eSV_D8onxTLgx7L&_nc_ohc=0h4Sn3echA0Q7kNvgFngwZE&_nc_oc=AdkIYl5DxlAZFX6kZ0utWqOs1LwrsRYRAkDMTJPYh8J8acQpvM-HrjlupfKagqtT-70&_nc_zt=23&_nc_ht=scontent.fsgn5-9.fna&_nc_gid=2FUrLzxo5RY-w2oYgzzNhQ&oh=00_AYHREaJ1rBjv3TB8ZQ1GuBzjbFceT7ptiO4AFk1qtgC83g&oe=67E96688"
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={HandleClickAccout} className="navlink-account">
-                  <ListItemIcon>
-                    <PersonOutlineIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Account</ListItemText>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={HandleClickLogout} className="navlink-logout">
-                  <ListItemIcon>
-                    <LogoutIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Logout</ListItemText>
-                </MenuItem>
-              </Menu>
-            </Box>
-          ) : (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Login or Register">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={HandleClickLogin}>
-                  <ListItemIcon>
-                    <LoginIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Login</ListItemText>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={HandleClickSignup}>
-                  <ListItemIcon>
-                    <AppRegistrationIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Signup</ListItemText>
-                </MenuItem>
-              </Menu>
-            </Box>
-          )}
+          <Box sx={{
+            gap: 2,
+            display: "flex",
+            alignItems: "center",
+          }}>
+            <ModeSelect />
+            {accessToken ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t39.30808-6/472216957_1924617648026190_5823984232582036858_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGhfUvwlJn7Uq3b3j5yplmEl_szgKf1KTKX-zOAp_UpMth3c9rqnFKjlwb9ZUEAgNnkW60p7eSV_D8onxTLgx7L&_nc_ohc=0h4Sn3echA0Q7kNvgFngwZE&_nc_oc=AdkIYl5DxlAZFX6kZ0utWqOs1LwrsRYRAkDMTJPYh8J8acQpvM-HrjlupfKagqtT-70&_nc_zt=23&_nc_ht=scontent.fsgn5-9.fna&_nc_gid=2FUrLzxo5RY-w2oYgzzNhQ&oh=00_AYHREaJ1rBjv3TB8ZQ1GuBzjbFceT7ptiO4AFk1qtgC83g&oe=67E96688"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem
+                    onClick={HandleClickAccout}
+                    className="navlink-account"
+                  >
+                    <ListItemIcon>
+                      <PersonOutlineIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Account</ListItemText>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
+                    onClick={HandleClickLogout}
+                    className="navlink-logout"
+                  >
+                    <ListItemIcon>
+                      <LogoutIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Logout</ListItemText>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            ) : (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Login or Register">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={HandleClickLogin}>
+                    <ListItemIcon>
+                      <LoginIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Login</ListItemText>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem onClick={HandleClickSignup}>
+                    <ListItemIcon>
+                      <AppRegistrationIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Signup</ListItemText>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
