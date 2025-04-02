@@ -8,9 +8,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Tooltip from "@mui/material/Tooltip";
-import SettingsIcon from '@mui/icons-material/Settings';
-
-const PlantSettings = () => {
+import CancelIcon from "@mui/icons-material/Cancel";
+function PlantDisOwn() {
   const { serialID } = useParams();
 
   const { sendRequest, plantList, planList } = useContext(PlantContext);
@@ -42,38 +41,25 @@ const PlantSettings = () => {
     }
   }, [plantList, planList]);
 
-  const handleApplySettings = (e) => {
+  const handleDisownPot = (e) => {
     e.preventDefault();
-
-    let potID = null;
-    for (const obj of plantList) {
-      if (obj.SerialID === serialID) {
-        potID = obj.id;
-      }
-    }
-
-    const body = {
-      planID: e.target.planID.value,
-      potID,
-      Name: e.target.Name.value,
-    };
-    sendRequest(body, "apply_settings");
+    sendRequest(e, "disown_pot");
   };
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   return (
     <>
-      <Tooltip title="Pot Setting">
-        <Button 
-          onClick={handleOpen} 
-          sx={{ 
-            backgroundColor: 'primary.main',
-            '&:hover': { backgroundColor: 'primary.dark' },
-          }}>
-          <SettingsIcon sx={{ color: 'white' }} />
+      <Tooltip title="Disown pot">
+        <Button
+          onClick={handleOpen}
+          sx={{
+            backgroundColor: "#e74c3c",
+            "&:hover": { backgroundColor: "red" },
+          }}
+        >
+          <CancelIcon sx={{ color: "white" }} />
         </Button>
       </Tooltip>
       <Modal
@@ -100,10 +86,11 @@ const PlantSettings = () => {
             style={{
               borderRadius: 10 + "px",
               padding: 20 + "px",
-              paddingTop: 10 + "px",
+              paddingTop: 0 + "px",
               paddingBottom: 15 + "px",
+              height: 15 + "rem",
             }}
-            onSubmit={(e) => handleApplySettings(e)}
+            onSubmit={(e) => handleDisownPot(e)}
           >
             <p
               className="text-center"
@@ -111,70 +98,48 @@ const PlantSettings = () => {
                 fontWeight: "bold",
                 fontSize: "30px",
                 margin: 0 + "px",
-                marginBottom: 5 + "px",
-                color: "black",
+                color: "red",
               }}
             >
-              <i className="fa-solid fa-gear"></i> Pot settings
+              <i className="fa-solid fa-triangle-exclamation"></i> Disown pot
             </p>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label
                 style={{
                   color: "black",
+                  paddingTop: 30 + "px",
                 }}
               >
-                <i className="fa-solid fa-seedling"></i> Plant Name
+                <i className="fa-solid fa-fingerprint"></i> Serial ID
               </Form.Label>
               <Form.Control
                 type="text"
-                name="Name"
-                placeholder="Enter pot's name"
-                defaultValue={plantName}
+                name="serialID"
+                placeholder="Enter pot's serial ID"
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label
-                style={{
-                  marginTop: 20 + "px",
-                  color: "black",
+            <div className="d-flex justify-content-center">
+              <Button
+                sx={{
+                  mt: 4,
+                  backgroundColor: "red",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "flex",
+                  width: "100%",
                 }}
+                variant="contained"
+                type="submit"
               >
-                <i className="fa-solid fa-solar-panel"></i> Plan
-              </Form.Label>
-              <Form.Select
-                name="planID"
-                defaultValue={plantName}
-                aria-label="Default select example"
-              >
-                <option value="">Choose a plan...</option>
-                {planList.map((plan, index) => (
-                  <option key={index} value={plan.id}>
-                    {plan.Name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            <Button
-              sx={{
-                mt: 4,
-                backgroundColor: 'primary.main',
-                justifyContent: 'center',
-                alignItems: 'center',
-                display: 'flex',
-                width: '100%',
-              }}
-              variant="contained"
-              type="submit"
-            >
-              Submit
-            </Button>
+                Accept
+              </Button>
+            </div>
           </Form>
         </Box>
       </Modal>
     </>
   );
-};
+}
 
-export default PlantSettings;
+export default PlantDisOwn;

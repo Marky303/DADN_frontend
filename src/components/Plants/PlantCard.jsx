@@ -4,21 +4,21 @@ import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 
-const PlantCard = ({ plant }) => {
+const PlantCard = ({ plant, searchTerm }) => {
   const ref = useRef(null);
   const navigate = useNavigate();
 
   const hoverStyles = {
-    transform: "scale(1.01)",
+    transform: "scale(1.05)",
     boxShadow: "0px 4px 15px rgba(52, 152, 219, 0.5)",
-    outline: "2px solid #3498db",
+    outline: "3px solid ",
     cursor: "pointer",
   };
 
   const clickStyles = {
     transform: "scale(0.96)",
     boxShadow: "0px 4px 20px rgba(52, 152, 219, 0.8)",
-    outline: "2px solid #3498db",
+    outline: "2px solid ",
     cursor: "pointer",
   };
 
@@ -26,6 +26,20 @@ const PlantCard = ({ plant }) => {
     transform: "scale(1)",
     boxShadow: "none",
     outline: "none",
+  };
+
+  const highlightText = (text, term) => {
+    if (!term) return text;
+    const parts = text.split(new RegExp(`(${term})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === term.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: "yellow" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
   };
 
   return (
@@ -54,14 +68,17 @@ const PlantCard = ({ plant }) => {
         src="https://img.freepik.com/premium-vector/vector-art-small-plant-white-background_1266257-12018.jpg?semt=ais_hybrid"
       />
       <Card.Body>
-        <Card.Title>{plant.Name}</Card.Title>
+        <Card.Title>{highlightText(plant.Name, searchTerm)}</Card.Title>
         <Card.Text>
-          <Typography variant="body2">Serial ID: {plant.SerialID}</Typography>
+          <Typography variant="body2">
+            Serial ID: {highlightText(plant.SerialID, searchTerm)}
+          </Typography>
         </Card.Text>
       </Card.Body>
     </Card>
   );
 };
+
 PlantCard.propTypes = {
   plant: PropTypes.shape({
     SerialID: PropTypes.string.isRequired,
@@ -69,6 +86,7 @@ PlantCard.propTypes = {
     Description: PropTypes.string,
     Location: PropTypes.string,
   }).isRequired,
+  searchTerm: PropTypes.string, // Add prop type for searchTerm
 };
 
 export default PlantCard;

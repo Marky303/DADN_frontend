@@ -110,7 +110,7 @@ const PlantNotifications = () => {
   return (
     <Box 
       sx={{
-        width: "100%", border: "1px solid #ddd", borderRadius: "4px", overflow: "hidden", minHeight: "200px"
+        width: "100%", border: "1px solid #ddd", borderRadius: "4px", overflow: "hidden", minHeight: "250px"
       }}
     >
       <Box

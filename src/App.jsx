@@ -59,6 +59,7 @@ const App = () => (
               <Route exact path="/plants/:serialID" element={<PlantInfo />} />
               <Route exact path="/plants/:serialID/data" element={<PlantData />} />
               <Route exact path="/plants/:serialID/settings" element={<PlantSettings />} />
+\              
 
               <Route exact path="/plans" element={<Plans />} />
               <Route exact path="/plans/createplan" element={<CreatePlan />} />

@@ -1,101 +1,199 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, Card, Button, Badge } from "react-bootstrap";
+import EditIcon from "@mui/icons-material/Edit";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import SortIcon from "@mui/icons-material/Sort";
+import Typography from '@mui/material/Typography';
 
 import PlantContext from "../../context/PlantContext";
 
-const PlanListElement = ({ planData }) => {
-    const navigate = useNavigate();
-    const { sendRequest, loading } = useContext(PlantContext);
-    const ref = useRef();
-    const data = planData ? JSON.parse(planData.JSON) : {};
-    const planID = planData ? planData.id : null;
+const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
+  const navigate = useNavigate();
+  const { sendRequest } = useContext(PlantContext);
+  const [sortOrder, setSortOrder] = useState("asc"); // asc for ascending, desc for descending
 
-    const handleDelete = () => {
-        sendRequest(planID, "delete_plan");
-    };
+  const handleDelete = (planID) => {
+    sendRequest(planID, "delete_plan");
+  };
 
-    const handleCopy = () => {
-        sendRequest(data, "copy_plan");
-    };
+  const handleCopy = (data) => {
+    sendRequest(data, "copy_plan");
+  };
 
-    const handleEdit = () => {
-        navigate(`/plans/editplan/${planID}`, { state: { planData } });
-    };
+  const handleEdit = (planID, planData) => {
+    navigate(`/plans/editplan/${planID}`, { state: { planData } });
+  };
 
-    const hoverStyles = {
-        transform: "scale(1.005)",
-        boxShadow: "0px 4px 10px rgb(0, 102, 255, 0.5)",
-        outline: "2px solid rgb(0, 102, 255)",
-    };
+  const sortBy = (key) => {
+    const sorted = [...sortedPlanList].sort((a, b) => {
+      const valueA =
+        key === "PlantType" || key === "Name"
+          ? JSON.parse(a.JSON)[key]
+          : JSON.parse(a.JSON).Irrigation[key].length;
+      const valueB =
+        key === "PlantType" || key === "Name"
+          ? JSON.parse(b.JSON)[key]
+          : JSON.parse(b.JSON).Irrigation[key].length;
 
-    const resetStyles = {
-        transform: "scale(1)",
-        boxShadow: "none",
-        outline: "none",
-    };
+      if (typeof valueA === "string") {
+        return sortOrder === "asc" ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+      }
+      return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+    });
+    setSortedPlanList(sorted);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // Toggle sort order
+  };
 
-    return (
-        <Card
-            ref={ref}
-            onMouseEnter={() => {
-                Object.assign(ref.current.style, hoverStyles);
-            }}
-            onMouseLeave={() => {
-                Object.assign(ref.current.style, resetStyles);
-            }}
-            className="mb-3"
-            style={{
-                height: 3 + "rem",
-                transition: "transform 0.15s ease, box-shadow 0.15s ease"
-            }}
-        >
-            <Row className="h-100 px-4">
-                <Col xs={3} className="d-flex align-items-center">
-                    {data.Name}
-                </Col>
-                <Col xs={2} className="d-flex align-items-center">
-                    {data.PlantType}
-                </Col>
-                <Col xs={5} className="d-flex align-items-center">
-                    <Row className="w-100">
-                        <Col className="d-flex align-items-center" style={{ gap: "0.5rem" }}>
-                            <Badge bg="primary">{data.Irrigation.Schedules.length}</Badge> <span>Schedules</span>
-                        </Col>
-                        <Col className="d-flex align-items-center" style={{ gap: "0.5rem" }}>
-                            <Badge bg="warning">{data.Irrigation.Conditions.length}</Badge> <span>Conditions</span>
-                        </Col>
-                    </Row>
-                </Col>
-
-                <Col
-                    className="d-flex align-items-center justify-content-end"
-                    style={{ gap: "0.5rem" }}
-                >
-                    <Button
-                        onClick={() => handleEdit()}
-                        variant="warning"
-                        style={{ width: "2rem", height: "2rem", padding: 0 }}
-                    >
-                        <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                        onClick={() => handleCopy()}
-                        variant="primary"
-                        style={{ width: "2rem", height: "2rem", padding: 0 }}
-                    >
-                        <i className="fa-solid fa-copy"></i>
-                    </Button>
-                    <Button
-                        onClick={() => handleDelete()}
-                        variant="danger"
-                        style={{ width: "2rem", height: "2rem", padding: 0 }}
-                    >
-                        <i className="fa-solid fa-trash"></i>
-                    </Button>
-                </Col>
-            </Row>
-        </Card>
+  const highlightText = (text, highlight) => {
+    if (!highlight) return text;
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === highlight.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: "yellow" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
     );
+  };
+
+  return (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="plan table">
+        <TableHead>
+          <TableRow>
+            <TableCell
+              sx={{ cursor: "pointer", fontWeight: "bold", borderRight: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Name
+                </Typography> 
+                <SortIcon 
+                  onClick={() => sortBy("Name")}
+                  fontSize="small" 
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                />
+              </Box>
+            </TableCell>
+            <TableCell
+              sx={{ cursor: "pointer", fontWeight: "bold", borderRight: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Plant Type
+                </Typography> 
+                <SortIcon 
+                  onClick={() => sortBy("PlantType")}
+                  fontSize="small" 
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                />
+              </Box>
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ cursor: "pointer", fontWeight: "bold", borderRight: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Schedules
+                </Typography> 
+                <SortIcon 
+                  onClick={() => sortBy("Schedules")}
+                  fontSize="small" 
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                />
+              </Box>
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ cursor: "pointer", fontWeight: "bold", borderRight: "1px solid rgba(224, 224, 224, 1)" }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Conditions
+                </Typography> 
+                <SortIcon 
+                  onClick={() => sortBy("Conditions")}
+                  fontSize="small" 
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                />
+              </Box>
+            </TableCell>
+            <TableCell align="right">Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sortedPlanList.map((plan, index) => {
+            const data = JSON.parse(plan.JSON);
+            return (
+              <TableRow
+                key={index}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 102, 255, 0.1)",
+                    cursor: "pointer",
+                    scale: 1.02,
+                    transition: "all 0.2s ease-in-out",
+                  },
+                }}
+              >
+                <TableCell>{highlightText(data.Name, searchTerm)}</TableCell>
+                <TableCell>{data.PlantType}</TableCell>
+                <TableCell>
+                  {data.Irrigation.Schedules.length}
+                </TableCell>
+                <TableCell>
+                  {data.Irrigation.Conditions.length}
+                </TableCell>
+                <TableCell align="right">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 2.5,
+                      justifyContent: "right",
+                      alignItems: "center",
+                      color: "primary.main",
+                    }}
+                  >
+                    <Tooltip title="Edit">
+                      <EditIcon
+                        onClick={() => handleEdit(plan.id, plan)}
+                        sx={{ cursor: "pointer", fontSize: 30 }}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Copy">
+                      <ContentCopyIcon
+                        onClick={() => handleCopy(data)}
+                        sx={{ cursor: "pointer", fontSize: 30 }}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <DeleteIcon
+                        onClick={() => handleDelete(plan.id)}
+                        sx={{ cursor: "pointer", fontSize: 30 }}
+                      />
+                    </Tooltip>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 };
+
 export default PlanListElement;

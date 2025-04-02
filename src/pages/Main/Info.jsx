@@ -22,6 +22,14 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+// Define common styles for disabled inputs
+const disabledInputStyle = {
+  backgroundColor: "#f5f5f5",
+  color: "#757575",
+  border: "1px solid #e0e0e0",
+  cursor: "not-allowed",
+};
+
 const PersonalInfo = () => {
   const { sendRequest, user } = useContext(AuthContext);
 
@@ -30,7 +38,7 @@ const PersonalInfo = () => {
   // Lấy dữ liệu người dùng từ API khi component mount
   useEffect(() => {
     sendRequest(0, "info");
-  }, [sendRequest]);
+  }, []);
 
   // Load dữ liệu người dùng vào form khi component mount
   useEffect(() => {
@@ -66,6 +74,7 @@ const PersonalInfo = () => {
     <Box
       sx={{
         height: theme.trello.homeHeight,
+        backgroundColor: "background.main",
         width: "100%",
         overflowY: "auto",
       }}
@@ -135,7 +144,10 @@ const PersonalInfo = () => {
                   className="form-control"
                   name="Name"
                   disabled={!isEditing}
-                  style={{ height: "50px" }}
+                  style={{ 
+                    height: "50px",
+                    ...((!isEditing) && disabledInputStyle)
+                  }}
                 />
               </div>
               <div className="col-md-6">
@@ -147,7 +159,10 @@ const PersonalInfo = () => {
                   className="form-control"
                   name="email"
                   disabled={true}
-                  style={{ height: "50px" }}
+                  style={{ 
+                    height: "50px",
+                    ...disabledInputStyle
+                  }}
                 />
               </div>
             </div>
@@ -167,6 +182,7 @@ const PersonalInfo = () => {
                     borderRadius: 5 + "px",
                     padding: 8 + "px",
                     backgroundColor: "white",
+                    ...((!isEditing) && disabledInputStyle)
                   }}
                 >
                   <option value="M">Male</option>
@@ -183,7 +199,10 @@ const PersonalInfo = () => {
                   className="form-control"
                   name="DateOfBirth"
                   disabled={!isEditing}
-                  style={{ height: "50px" }}
+                  style={{ 
+                    height: "50px",
+                    ...((!isEditing) && disabledInputStyle)
+                  }}
                 />
               </div>
             </div>
@@ -199,7 +218,10 @@ const PersonalInfo = () => {
                   className="form-control"
                   name="PhoneNumber"
                   disabled={!isEditing}
-                  style={{ height: "50px" }}
+                  style={{ 
+                    height: "50px",
+                    ...((!isEditing) && disabledInputStyle)
+                  }}
                 />
               </div>
               <div className="col-md-6">
@@ -211,7 +233,10 @@ const PersonalInfo = () => {
                   className="form-control"
                   name="Address"
                   disabled={!isEditing}
-                  style={{ height: "50px" }}
+                  style={{ 
+                    height: "50px",
+                    ...((!isEditing) && disabledInputStyle)
+                  }}
                 />
               </div>
             </div>
@@ -225,13 +250,36 @@ const PersonalInfo = () => {
                       marginRight: "10px",
                       backgroundColor: 'red',
                       color: "white",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        backgroundColor: "#d32f2f",
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+                      }
                     }}
                     onClick={() => setIsEditing(false)}
                   >
                     Cancel
                   </Button>
                   <Button
-                    sx={{ backgroundColor: "#0D6EFD", color: "white" }}
+                    sx={{ 
+                      backgroundColor: "#0D6EFD", 
+                      color: "white",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        backgroundColor: "#0b5ed7",
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+                      }
+                    }}
                     type="submit"
                   >
                     Save
@@ -241,8 +289,18 @@ const PersonalInfo = () => {
                 <Button
                   sx={{
                     marginTop: "25px",
-                    backgroundColor: "#0D6EFD",
+                    backgroundColor: "primary.main",
                     color: "white",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      backgroundColor: "#1976d2",
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                    },
+                    "&:active": {
+                      transform: "translateY(0)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+                    }
                   }}
                   role={undefined}
                   variant="contained"

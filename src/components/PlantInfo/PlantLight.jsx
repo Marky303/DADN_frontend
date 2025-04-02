@@ -19,6 +19,7 @@ const PlantLight = () => {
 
   let [value, setValue] = useState(null);
   const [desiredRange, setDesiredRange] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchdesiredRange = async () => {
@@ -81,10 +82,14 @@ const PlantLight = () => {
     <Card
       ref={ref}
       onClick={handleGraphChange}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         backgroundColor: "#ffff1f",
         transition: "transform 0.15s ease, box-shadow 0.15s ease",
         cursor: "pointer",
+        transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+        boxShadow: isHovered ? '0px 10px 20px rgba(0, 0, 0, 0.2)' : '0px 4px 8px rgba(0, 0, 0, 0.1)',
       }}
       className="p-3 px-3"
     >
