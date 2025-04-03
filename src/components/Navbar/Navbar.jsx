@@ -38,7 +38,7 @@ function ResponsiveAppBar() {
   let { accessToken, logout } = useContext(AuthContext);
 
   const { sendRequest, user } = useContext(AuthContext);
-  const [avatar, setAvartar] = useState("");
+  const [avatar, setAvatar] = useState("");
   useEffect(() => {
     if (accessToken) {
       sendRequest(0, "info");
@@ -47,7 +47,7 @@ function ResponsiveAppBar() {
   // Load dữ liệu người dùng vào form khi component mount
     useEffect(() => {
       if (user) {
-        setAvartar(user.Avatar); // Load avatar from the response data
+        setAvatar(user.Avatar); // Load avatar from the response data
       }
     }, [user]);
 

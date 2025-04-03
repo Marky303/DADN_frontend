@@ -34,7 +34,7 @@ const disabledInputStyle = {
 const PersonalInfo = () => {
   const { sendRequest, user } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
-  const [avatar, setAvartar] = useState("");
+  const [avatar, setAvatar] = useState("");
 
   // Lấy dữ liệu người dùng từ API khi component mount
   useEffect(() => {
@@ -44,7 +44,7 @@ const PersonalInfo = () => {
   // Load dữ liệu người dùng vào form khi component mount
   useEffect(() => {
     if (user) {
-      setAvartar(user.Avatar); // Load avatar from the response data
+      setAvatar(user.Avatar); // Load avatar from the response data
       const fieldList = [
         { name: "Name", type: "text" },
         { name: "email", type: "text" },
@@ -90,7 +90,7 @@ const PersonalInfo = () => {
       const reader = new FileReader();
       reader.readAsDataURL(file); // Upload image as base64 string
       reader.onload = () => {
-        setAvartar(reader.result); // Temporarily set avatar in state
+        setAvatar(reader.result); // Temporarily set avatar in state
       };
     } else {
       alert("Please upload a valid image file.");
@@ -98,12 +98,12 @@ const PersonalInfo = () => {
   };
 
   const handleDeleteAvatar = () => {
-    setAvartar(""); // Reset avatar to default (empty string or default image URL)
+    setAvatar(""); // Reset avatar to default (empty string or default image URL)
   };
 
   const handleCancel = () => {
     if (user) {
-      setAvartar(user.Avatar); // Reset avatar to the original value
+      setAvatar(user.Avatar); // Reset avatar to the original value
       const fieldList = [
         { name: "Name", type: "text" },
         { name: "email", type: "text" },
