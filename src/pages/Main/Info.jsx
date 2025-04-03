@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import theme from "../../theme";
 
 const VisuallyHiddenInput = styled("input")({
@@ -32,8 +33,8 @@ const disabledInputStyle = {
 
 const PersonalInfo = () => {
   const { sendRequest, user } = useContext(AuthContext);
-
   const [isEditing, setIsEditing] = useState(false);
+  const [avatar, setAvartar] = useState("");
 
   // Lấy dữ liệu người dùng từ API khi component mount
   useEffect(() => {
@@ -43,31 +44,89 @@ const PersonalInfo = () => {
   // Load dữ liệu người dùng vào form khi component mount
   useEffect(() => {
     if (user) {
-      let element;
+      setAvartar(user.Avatar); // Load avatar from the response data
       const fieldList = [
-        "Name",
-        "email",
-        "Gender",
-        "DateOfBirth",
-        "PhoneNumber",
-        "Address",
+        { name: "Name", type: "text" },
+        { name: "email", type: "text" },
+        { name: "Gender", type: "select" },
+        { name: "DateOfBirth", type: "date" },
+        { name: "PhoneNumber", type: "text" },
+        { name: "Address", type: "text" },
+        { name: "avatar", type: "file" },
       ];
-      for (let i of fieldList) {
-        element = document.getElementsByName(i)[0];
-        if (i == "DateOfBirth")
-          element.setAttribute("value", dayjs(user[i]).format("YYYY-MM-DD"));
-        else if (i == "Gender") {
-          if (element) element.value = user[i];
-        } else element.setAttribute("value", user[i]);
-      }
+
+      fieldList.forEach(({ name, type }) => {
+        const element = document.getElementsByName(name)[0];
+        if (element) {
+          if (type === "date") {
+            element.setAttribute(
+              "value",
+              dayjs(user[name]).format("YYYY-MM-DD")
+            );
+          } else if (type === "select") {
+            element.value = user[name];
+          } else {
+            element.setAttribute("value", user[name]);
+          }
+        }
+      });
     }
   }, [user]);
 
   // Gửi dữ liệu cập nhật lên server
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (avatar) e.avatar = avatar; // Add avatar field to the event object
     const successful = await sendRequest(e, "update_info_user");
-    if (successful) setIsEditing(false);
+    if (successful) {
+      setIsEditing(false);
+      window.location.reload(); // Reload the page after saving
+    }
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file); // Upload image as base64 string
+      reader.onload = () => {
+        setAvartar(reader.result); // Temporarily set avatar in state
+      };
+    } else {
+      alert("Please upload a valid image file.");
+    }
+  };
+
+  const handleDeleteAvatar = () => {
+    setAvartar(""); // Reset avatar to default (empty string or default image URL)
+  };
+
+  const handleCancel = () => {
+    if (user) {
+      setAvartar(user.Avatar); // Reset avatar to the original value
+      const fieldList = [
+        { name: "Name", type: "text" },
+        { name: "email", type: "text" },
+        { name: "Gender", type: "select" },
+        { name: "DateOfBirth", type: "date" },
+        { name: "PhoneNumber", type: "text" },
+        { name: "Address", type: "text" },
+      ];
+  
+      fieldList.forEach(({ name, type }) => {
+        const element = document.getElementsByName(name)[0];
+        if (element) {
+          if (type === "date") {
+            element.value = dayjs(user[name]).format("YYYY-MM-DD");
+          } else if (type === "select") {
+            element.value = user[name];
+          } else {
+            element.value = user[name];
+          }
+        }
+      });
+    }
+    setIsEditing(false); // Exit editing mode
   };
 
   return (
@@ -79,13 +138,15 @@ const PersonalInfo = () => {
         overflowY: "auto",
       }}
     >
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflowY: 'auto',
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "auto",
+        }}
+      >
         {/* Ảnh đại diện */}
         <Box
           sx={{
@@ -93,33 +154,55 @@ const PersonalInfo = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            mt: 3
+            mt: 3,
           }}
         >
           <Avatar
             alt="Profile"
-            src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t39.30808-6/472216957_1924617648026190_5823984232582036858_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGhfUvwlJn7Uq3b3j5yplmEl_szgKf1KTKX-zOAp_UpMth3c9rqnFKjlwb9ZUEAgNnkW60p7eSV_D8onxTLgx7L&_nc_ohc=0h4Sn3echA0Q7kNvgFngwZE&_nc_oc=AdkIYl5DxlAZFX6kZ0utWqOs1LwrsRYRAkDMTJPYh8J8acQpvM-HrjlupfKagqtT-70&_nc_zt=23&_nc_ht=scontent.fsgn5-9.fna&_nc_gid=2FUrLzxo5RY-w2oYgzzNhQ&oh=00_AYHREaJ1rBjv3TB8ZQ1GuBzjbFceT7ptiO4AFk1qtgC83g&oe=67E96688"
+            src={avatar}
             sx={{
               width: 220,
               height: 220,
-
             }}
           />
-          { isEditing && <Button
-            sx={{
-              mt: 4,
-              backgroundColor: "primary.main",
-              color: "white",
-            }}
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon/>}
-          >
-            Upload
-            <VisuallyHiddenInput type="file" />
-          </Button>}
+          {isEditing && (
+            <Box sx={{ display: "flex", justifyContent: "center", alignContent: "center", gap: 2 }}>
+              <Button
+                sx={{
+                  mt: 4,
+                  backgroundColor: "primary.main",
+                  color: "white",
+                }}
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+              </Button>
+              <Button
+                sx={{
+                  mt: 4,
+                  backgroundColor: "red",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#d32f2f",
+                  },
+                }}
+                onClick={handleDeleteAvatar}
+                variant="contained"
+                startIcon={<DeleteForeverIcon/>}
+              >
+                Delete
+              </Button>
+            </Box>
+          )}
         </Box>
 
         {/* Thông tin cá nhân */}
@@ -136,32 +219,28 @@ const PersonalInfo = () => {
             {/* Name & Email */}
             <div className="row mt-2">
               <div className="col-md-6">
-                <Typography variant="h6">
-                  Name
-                </Typography>
+                <Typography variant="h6">Name</Typography>
                 <input
                   type="text"
                   className="form-control"
                   name="Name"
                   disabled={!isEditing}
-                  style={{ 
+                  style={{
                     height: "50px",
-                    ...((!isEditing) && disabledInputStyle)
+                    ...(!isEditing && disabledInputStyle),
                   }}
                 />
               </div>
               <div className="col-md-6">
-                <Typography variant="h6">
-                  Email
-                </Typography>
+                <Typography variant="h6">Email</Typography>
                 <input
                   type="email"
                   className="form-control"
                   name="email"
                   disabled={true}
-                  style={{ 
+                  style={{
                     height: "50px",
-                    ...disabledInputStyle
+                    ...disabledInputStyle,
                   }}
                 />
               </div>
@@ -170,9 +249,7 @@ const PersonalInfo = () => {
             {/* Gender & Date of Birth */}
             <div className="row mt-3">
               <div className="col-md-6">
-                <Typography variant="h6">
-                  Gender
-                </Typography>
+                <Typography variant="h6">Gender</Typography>
                 <select
                   className="form-control"
                   name="Gender"
@@ -182,7 +259,7 @@ const PersonalInfo = () => {
                     borderRadius: 5 + "px",
                     padding: 8 + "px",
                     backgroundColor: "white",
-                    ...((!isEditing) && disabledInputStyle)
+                    ...(!isEditing && disabledInputStyle),
                   }}
                 >
                   <option value="M">Male</option>
@@ -191,17 +268,15 @@ const PersonalInfo = () => {
               </div>
 
               <div className="col-md-6">
-                <Typography variant="h6">
-                  Date of Birth
-                </Typography>
+                <Typography variant="h6">Date of Birth</Typography>
                 <input
                   type="date"
                   className="form-control"
                   name="DateOfBirth"
                   disabled={!isEditing}
-                  style={{ 
+                  style={{
                     height: "50px",
-                    ...((!isEditing) && disabledInputStyle)
+                    ...(!isEditing && disabledInputStyle),
                   }}
                 />
               </div>
@@ -210,32 +285,28 @@ const PersonalInfo = () => {
             {/* Phone & Address */}
             <div className="row mt-3">
               <div className="col-md-6">
-                <Typography variant="h6">
-                  Phone Number
-                </Typography>
+                <Typography variant="h6">Phone Number</Typography>
                 <input
                   type="text"
                   className="form-control"
                   name="PhoneNumber"
                   disabled={!isEditing}
-                  style={{ 
+                  style={{
                     height: "50px",
-                    ...((!isEditing) && disabledInputStyle)
+                    ...(!isEditing && disabledInputStyle),
                   }}
                 />
               </div>
               <div className="col-md-6">
-                <Typography variant="h6">
-                  Address
-                </Typography>
+                <Typography variant="h6">Address</Typography>
                 <input
                   type="text"
                   className="form-control"
                   name="Address"
                   disabled={!isEditing}
-                  style={{ 
+                  style={{
                     height: "50px",
-                    ...((!isEditing) && disabledInputStyle)
+                    ...(!isEditing && disabledInputStyle),
                   }}
                 />
               </div>
@@ -248,37 +319,37 @@ const PersonalInfo = () => {
                   <Button
                     sx={{
                       marginRight: "10px",
-                      backgroundColor: 'red',
+                      backgroundColor: "red",
                       color: "white",
                       transition: "all 0.3s ease",
                       "&:hover": {
                         backgroundColor: "#d32f2f",
                         transform: "translateY(-2px)",
-                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                        boxShadow: "0 4px 8px primary.dark",
                       },
                       "&:active": {
                         transform: "translateY(0)",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
-                      }
+                        boxShadow: "0 2px 4px primary.dark",
+                      },
                     }}
-                    onClick={() => setIsEditing(false)}
+                    onClick={handleCancel}
                   >
                     Cancel
                   </Button>
                   <Button
-                    sx={{ 
-                      backgroundColor: "#0D6EFD", 
+                    sx={{
+                      backgroundColor: "primary.main",
                       color: "white",
                       transition: "all 0.3s ease",
                       "&:hover": {
-                        backgroundColor: "#0b5ed7",
+                        backgroundColor: "primary.dark",
                         transform: "translateY(-2px)",
-                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                        boxShadow: "0 4px 8px primary.dark",
                       },
                       "&:active": {
                         transform: "translateY(0)",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
-                      }
+                        boxShadow: "0 2px 4px primary.dark",
+                      },
                     }}
                     type="submit"
                   >
@@ -293,14 +364,14 @@ const PersonalInfo = () => {
                     color: "white",
                     transition: "all 0.3s ease",
                     "&:hover": {
-                      backgroundColor: "#1976d2",
+                      backgroundColor: "primary.dark",
                       transform: "translateY(-2px)",
-                      boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                      boxShadow: "0 4px 8px primary.dark",
                     },
                     "&:active": {
                       transform: "translateY(0)",
-                      boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
-                    }
+                      boxShadow: "0 2px 4px primary.dark",
+                    },
                   }}
                   role={undefined}
                   variant="contained"
