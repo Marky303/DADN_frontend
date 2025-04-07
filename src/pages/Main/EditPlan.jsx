@@ -22,6 +22,9 @@ import PlantContext from "../../context/PlantContext";
 import hhmmToSeconds from "../../functions/dateConversion/hhmmToSeconds";
 import PlanScheduleTooltip from "../../components/Plans/PlanScheduleTooltip";
 import PlanConditionTooltip from "../../components/Plans/PlanConditionTooltip";
+import PlanNameTooltip from "../../components/Plans/PlanNameTooltip";
+import PlanTypeTooltip from "../../components/Plans/PlanTypeTooltip";
+import PlanRangeTooltip from "../../components/Plans/PlanRangeTooltip";
 
 const EditPlan = () => {
   const navigate = useNavigate();
@@ -113,11 +116,28 @@ const EditPlan = () => {
               <Form.Item
                 label={
                   <Box className="fs-6">
-                    <i
-                      style={{ marginRight: 0.25 + "rem" }}
-                      className="fa-solid fa-solar-panel"
-                    ></i>
-                    Plan name
+                    <Popup
+                      trigger={
+                        <Box>
+                          <i
+                            style={{ marginRight: 0.25 + "rem" }}
+                            className="fa-solid fa-solar-panel"
+                          ></i>
+                          Plan name{" "}
+                        </Box>
+                      }
+                      on={["hover", "focus"]}
+                      position="right center"
+                      closeOnDocumentClick
+                      contentStyle={{
+                        padding: 0,
+                        backgroundColor: "rgba(0,0,0,0.0)",
+                        border: "none",
+                        boxShadow: "0px 0px 0px",
+                      }}
+                    >
+                      <PlanNameTooltip />
+                    </Popup>
                   </Box>
                 }
                 name="Name"
@@ -133,11 +153,28 @@ const EditPlan = () => {
               <Form.Item
                 label={
                   <Box className="fs-6">
-                    <i
-                      style={{ marginRight: 0.25 + "rem" }}
-                      className="fa-solid fa-seedling"
-                    ></i>
-                    Plant Type
+                    <Popup
+                      trigger={
+                        <Box>
+                          <i
+                            style={{ marginRight: 0.25 + "rem" }}
+                            className="fa-solid fa-seedling"
+                          ></i>
+                          Plan type
+                        </Box>
+                      }
+                      on={["hover", "focus"]}
+                      position="right center"
+                      closeOnDocumentClick
+                      contentStyle={{
+                        padding: 0,
+                        backgroundColor: "rgba(0,0,0,0.0)",
+                        border: "none",
+                        boxShadow: "0px 0px 0px",
+                      }}
+                    >
+                      <PlanTypeTooltip />
+                    </Popup>
                   </Box>
                 }
                 name="PlantType"
@@ -167,11 +204,28 @@ const EditPlan = () => {
             style={{ marginBottom: "2rem" }}
             label={
               <Box className="fs-6">
-                <i
-                  style={{ marginRight: "0.25rem" }}
-                  className="fa-solid fa-temperature-three-quarters"
-                ></i>
-                Temperature range (°C)
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-temperature-three-quarters"
+                      ></i>
+                      Temperature range (°C)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"temperature"} />
+                </Popup>
               </Box>
             }
             rules={[{ required: true, message: "Enter temperature range" }]}
@@ -207,11 +261,28 @@ const EditPlan = () => {
             style={{ marginBottom: "2rem" }}
             label={
               <Box className="fs-6">
-                <i
-                  style={{ marginRight: "0.25rem" }}
-                  className="fa-solid fa-sun"
-                ></i>
-                Light level range (%)
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-sun"
+                      ></i>
+                      Light level range (%)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"light"} />
+                </Popup>
               </Box>
             }
             rules={[{ required: true, message: "Enter light level range" }]}
@@ -247,11 +318,28 @@ const EditPlan = () => {
             style={{ marginBottom: "2rem" }}
             label={
               <Box className="fs-6">
-                <i
-                  style={{ marginRight: "0.25rem" }}
-                  className="fa-solid fa-glass-water"
-                ></i>
-                Soil humidity range (ml)
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-glass-water"
+                      ></i>
+                      Soil humidity range (ml)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"soil humidity"} />
+                </Popup>
               </Box>
             }
             rules={[{ required: true, message: "Enter soil humidity range" }]}
@@ -287,11 +375,28 @@ const EditPlan = () => {
             style={{ marginBottom: "2rem" }}
             label={
               <Box className="fs-6">
-                <i
-                  style={{ marginRight: "0.25rem" }}
-                  className="fa-solid fa-droplet"
-                ></i>
-                Moisture range (%)
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-droplet"
+                      ></i>
+                      Moisture range (%)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"moisture"} />
+                </Popup>
               </Box>
             }
             rules={[{ required: true, message: "Enter moisture range" }]}

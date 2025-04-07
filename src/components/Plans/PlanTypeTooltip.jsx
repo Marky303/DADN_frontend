@@ -13,7 +13,7 @@ const PlanTypeTooltip = () => {
         <Row
             className="m-0"
         >
-            <p className="mb-1 px-1"><i className="fa-solid fa-lightbulb"></i> Plant name helps you specify a plant for your plan</p>
+            <p className="mb-1 px-1"><i className="fa-solid fa-lightbulb"></i> Plant type helps you specify a plant for your plan</p>
         </Row>
     </Card>;
 };

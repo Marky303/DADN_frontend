@@ -175,7 +175,7 @@ export const UserauthProvider = () => {
     });
 
     if (response && response.status == 200) {
-      setUser(response.data); 
+      setUser(response.data);
     } else {
       throw e;
     }
@@ -206,6 +206,7 @@ export const UserauthProvider = () => {
 
     if (response && response.status == 200) {
       notify("success", "User info updated!");
+      info();
       return true;
     } else {
       throw e;

@@ -110,7 +110,7 @@ const PlantNotifications = () => {
   return (
     <Box 
       sx={{
-        width: "100%", border: "1px solid #ddd", borderRadius: "4px", overflow: "hidden", minHeight: "250px"
+        width: "100%", border: "1px solid #ddd", borderRadius: "4px", overflow: "hidden", height: "200px", boxShadow: "1px 1px 3px"
       }}
     >
       <Box
@@ -203,8 +203,9 @@ const PlantNotifications = () => {
       <Box
         sx={{
           padding: "16px",
-          maxHeight: "170px",
+          maxHeight: "195px",
           overflowY: "auto",
+          backgroundColor: 'white'
         }}
       >
         {notifications && notifications.length != 0
