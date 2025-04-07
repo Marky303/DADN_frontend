@@ -9,20 +9,12 @@ const theme = extendTheme({
     appBarHeight: APP_BAR_HEIGHT,
     homeHeight: HOME_HEIGHT,
   },
-  // palette: {
-  //   primary: {
-  //     main: '#2ecc71',
-  //     dark: '#27ae60'
-  //     // main: deepOrange[500]
-  //   }
-  // }
   colorSchemes: {
     light: {
       palette: {
         primary: {
           main: "#809D3C",
-          dark: "#27ae60",
-          // main: deepOrange[500]
+          dark: "#5D8736",
         },
         background: {
           main: "white",
@@ -32,7 +24,9 @@ const theme = extendTheme({
     },
     dark: {
       palette: {
-        primary: { main: "#34495e" },
+        primary: { 
+          main: "#34495e" 
+        },
         background: {
           main: "#a4b0be",
         },

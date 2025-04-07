@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import notify from "../functions/toastify/notify";
@@ -109,8 +109,8 @@ export const UserauthProvider = () => {
     );
 
     if (response && response.status == 200) {
-      console.log("access token: " + response.data.access);
-      console.log("refresh token: " + response.data.refresh);
+      // console.log("access token: " + response.data.access);
+      // console.log("refresh token: " + response.data.refresh);
       setAccessToken(response.data.access);
       setRefreshToken(response.data.refresh);
 
@@ -175,21 +175,24 @@ export const UserauthProvider = () => {
     });
 
     if (response && response.status == 200) {
-      setUser(response.data);
+      setUser(response.data); 
     } else {
       throw e;
     }
   };
 
   const update_info_user = async (e) => {
+    if (!e.avatar) {
+      e.avatar = null;
+    }
     const body = {
       Name: e.target.Name.value,
       PhoneNumber: e.target.PhoneNumber.value,
       DateOfBirth: e.target.DateOfBirth.value,
       Gender: e.target.Gender.value,
       Address: e.target.Address.value,
+      Avatar: e.avatar, // Include avatar in the request body
     };
-    console.log(body);
     const response = await axios.post(
       import.meta.env.VITE_BACKEND_USER_UPDATE_ENDPOINT,
       body,

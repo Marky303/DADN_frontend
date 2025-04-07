@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import AuthContext from "../../context/UserauthContext";
 import { useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -34,6 +34,25 @@ const dict = {
 };
 
 function ResponsiveAppBar() {
+  // Get functions + variables from contexts
+  let { accessToken, logout } = useContext(AuthContext);
+
+  const { sendRequest, user } = useContext(AuthContext);
+  const [avatar, setAvatar] = useState("");
+  useEffect(() => {
+    if (accessToken) {
+      sendRequest(0, "info");
+    }
+  }, [accessToken]);
+  // Load dữ liệu người dùng vào form khi component mount
+    useEffect(() => {
+      if (user) {
+        setAvatar(user.Avatar); // Load avatar from the response data
+      }
+    }, [user]);
+
+
+  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const muiTheme = useTheme(); // Get current theme
@@ -41,9 +60,6 @@ function ResponsiveAppBar() {
   const textColor = isDarkMode ? 'white' : 'black';
   const leftNavTextColor = 'white'; // Always white for left nav
   const highlightColor = "#ff793f";
-
-  // Get functions + variables from contexts
-  let { accessToken, logout } = useContext(AuthContext);
 
   // Check for location and highlights
   const location = useLocation().pathname;
@@ -299,7 +315,7 @@ function ResponsiveAppBar() {
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt="Remy Sharp"
-                      src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t39.30808-6/472216957_1924617648026190_5823984232582036858_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGhfUvwlJn7Uq3b3j5yplmEl_szgKf1KTKX-zOAp_UpMth3c9rqnFKjlwb9ZUEAgNnkW60p7eSV_D8onxTLgx7L&_nc_ohc=0h4Sn3echA0Q7kNvgFngwZE&_nc_oc=AdkIYl5DxlAZFX6kZ0utWqOs1LwrsRYRAkDMTJPYh8J8acQpvM-HrjlupfKagqtT-70&_nc_zt=23&_nc_ht=scontent.fsgn5-9.fna&_nc_gid=2FUrLzxo5RY-w2oYgzzNhQ&oh=00_AYHREaJ1rBjv3TB8ZQ1GuBzjbFceT7ptiO4AFk1qtgC83g&oe=67E96688"
+                      src={avatar}
                     />
                   </IconButton>
                 </Tooltip>
