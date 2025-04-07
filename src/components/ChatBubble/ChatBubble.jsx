@@ -24,7 +24,7 @@ import FunctionCallMessage from "./FunctionCallMessage";
 import FunctionResponseMessage from "./FunctionResponseMessage";
 
 const ChatBubble = () => {
-  const { initializeFirestore, sendRequest, chatID, loading } = useContext(PlantContext);
+  const { initializeFirestore, sendRequest, chatID, setChatID, loading } = useContext(PlantContext);
 
   const [chat, setChat] = useState({
     History: [],
@@ -55,21 +55,51 @@ const ChatBubble = () => {
   }, [chatID]);
 
   const handleSendMessage = (message) => {
-    sendRequest(message, 'send_message');
-    setChat((prev) => ({
-      ...prev,
-      History: [
-        ...prev.History,
-        {
-          role: 'user',
-          parts: [
+    switch (message) {
+      case '/help':
+        setChat((prev) => ({
+          ...prev,
+          History: [
+            ...prev.History,
             {
-              text: message
+              role: 'user',
+              parts: [
+                {
+                  text: `
+                  List of commands:
+                  /load <id>: Load chat history with ID
+                  /clear: Create a new chat
+                  `
+                }
+              ]
             }
           ]
-        }
-      ]
-    }));
+        }));
+        break;
+      case '/load':
+
+        break;
+      case '/clear':
+        setChatID(null);
+        break;
+      default:
+        sendRequest(message, 'send_message');
+        setChat((prev) => ({
+          ...prev,
+          History: [
+            ...prev.History,
+            {
+              role: 'user',
+              parts: [
+                {
+                  text: message
+                }
+              ]
+            }
+          ]
+        }));
+        break;
+    }
   };
 
   return (

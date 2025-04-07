@@ -73,17 +73,11 @@ export const UserauthProvider = () => {
     if (error.response) {
       for (var prop in error.response.data) {
         if (Object.prototype.hasOwnProperty.call(error.response.data, prop)) {
-          // error.response.data have multiple types of properties
-          // "detail" property is a string containing a message
-          // other properties are a list of strings
-          switch (prop) {
-            case "detail":
-              notify("error", error.response.data[prop]);
-              break;
-            default:
-              for (const message of error.response.data[prop])
-                notify("error", prop + ": " + message);
-          }
+          if (Array.isArray(error.response.data[prop]))
+            for (const message of error.response.data[prop])
+              notify("error", message);
+          else
+            notify("error", error.response.data[prop]);
         }
       }
     } else {
