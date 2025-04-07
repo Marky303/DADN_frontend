@@ -76,8 +76,8 @@ const PersonalInfo = () => {
   // Gửi dữ liệu cập nhật lên server
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (avatar) e.avatar = avatar; // Add avatar field to the event object
-    const successful = await sendRequest(e, "update_info_user");
+    const payload = { ...e, avatar }; // Create a separate payload object
+    const successful = await sendRequest(payload, "update_info_user");
     if (successful) {
       setIsEditing(false);
       window.location.reload(); // Reload the page after saving
