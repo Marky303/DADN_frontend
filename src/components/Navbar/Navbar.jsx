@@ -133,7 +133,7 @@ function ResponsiveAppBar() {
   // Left Navbar
   const HandleClickDashboard = () => {
     // Navigate to the account page
-    navigate("/");
+    navigate("/dashboard");
     handleCloseNavMenu(); // Đóng menu sau khi click
   };
   const HandleClickPlants = () => {

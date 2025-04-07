@@ -69,7 +69,7 @@ const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ overflowX: 'hidden' }}>
       <Table sx={{ minWidth: 650 }} aria-label="plan table">
         <TableHead>
           <TableRow>
@@ -79,11 +79,11 @@ const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   Name
-                </Typography> 
-                <SortIcon 
+                </Typography>
+                <SortIcon
                   onClick={() => sortBy("Name")}
-                  fontSize="small" 
-                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                  fontSize="small"
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }}
                 />
               </Box>
             </TableCell>
@@ -93,11 +93,11 @@ const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   Plant Type
-                </Typography> 
-                <SortIcon 
+                </Typography>
+                <SortIcon
                   onClick={() => sortBy("PlantType")}
-                  fontSize="small" 
-                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                  fontSize="small"
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }}
                 />
               </Box>
             </TableCell>
@@ -108,11 +108,11 @@ const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   Schedules
-                </Typography> 
-                <SortIcon 
+                </Typography>
+                <SortIcon
                   onClick={() => sortBy("Schedules")}
-                  fontSize="small" 
-                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                  fontSize="small"
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }}
                 />
               </Box>
             </TableCell>
@@ -123,11 +123,11 @@ const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   Conditions
-                </Typography> 
-                <SortIcon 
+                </Typography>
+                <SortIcon
                   onClick={() => sortBy("Conditions")}
-                  fontSize="small" 
-                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }} 
+                  fontSize="small"
+                  sx={{ mr: 1, transform: sortOrder === "asc" ? "rotate(0deg)" : "rotate(180deg)" }}
                 />
               </Box>
             </TableCell>
@@ -144,7 +144,7 @@ const PlanListElement = ({ sortedPlanList, setSortedPlanList, searchTerm }) => {
                   "&:hover": {
                     backgroundColor: "rgba(0, 102, 255, 0.1)",
                     cursor: "pointer",
-                    scale: 1.02,
+                    scale: 1.01,
                     transition: "all 0.2s ease-in-out",
                   },
                 }}

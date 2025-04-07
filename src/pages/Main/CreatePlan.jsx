@@ -184,7 +184,235 @@ const CreatePlan = () => {
             </Col>
           </Row>
           <hr />
-          
+
+          {/* Environmental Parameters Section */}
+          <p className="fs-5 fw-bold mt-3 mb-3">Environmental Parameters</p>
+
+          <Form.Item
+            style={{ marginBottom: "2rem" }}
+            label={
+              <Box className="fs-6">
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-temperature-three-quarters"
+                      ></i>
+                      Temperature range (°C)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"temperature"} />
+                </Popup>
+              </Box>
+            }
+            rules={[{ required: true, message: "Enter temperature range" }]}
+          >
+            <Row>
+              <Col>
+                <Form.Item name={["Temperature", "min"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter lowest temperature"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                xs={1}
+              >
+                <i className="fa-solid fa-arrow-right fs-3"></i>
+              </Col>
+              <Col>
+                <Form.Item name={["Temperature", "max"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter highest temperature"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form.Item>
+
+          <Form.Item
+            style={{ marginBottom: "2rem" }}
+            label={
+              <Box className="fs-6">
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-sun"
+                      ></i>
+                      Light level range (%)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"light"} />
+                </Popup>
+              </Box>
+            }
+            rules={[{ required: true, message: "Enter light level range" }]}
+          >
+            <Row>
+              <Col>
+                <Form.Item name={["Light", "min"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter lowest light level"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                xs={1}
+              >
+                <i className="fa-solid fa-arrow-right fs-3"></i>
+              </Col>
+              <Col>
+                <Form.Item name={["Light", "max"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter highest light level"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form.Item>
+
+          <Form.Item
+            style={{ marginBottom: "2rem" }}
+            label={
+              <Box className="fs-6">
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-glass-water"
+                      ></i>
+                      Soil humidity range (ml)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"soil humidity"} />
+                </Popup>
+              </Box>
+            }
+            rules={[{ required: true, message: "Enter soil humidity range" }]}
+          >
+            <Row>
+              <Col>
+                <Form.Item name={["SoilHumidity", "min"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter lowest soil humidity"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                xs={1}
+              >
+                <i className="fa-solid fa-arrow-right fs-3"></i>
+              </Col>
+              <Col>
+                <Form.Item name={["SoilHumidity", "max"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter highest soil humidity"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form.Item>
+
+          <Form.Item
+            style={{ marginBottom: "2rem" }}
+            label={
+              <Box className="fs-6">
+                <Popup
+                  trigger={
+                    <Box>
+                      <i
+                        style={{ marginRight: "0.25rem" }}
+                        className="fa-solid fa-droplet"
+                      ></i>
+                      Moisture range (%)
+                    </Box>
+                  }
+                  on={["hover", "focus"]}
+                  position="right center"
+                  closeOnDocumentClick
+                  contentStyle={{
+                    padding: 0,
+                    backgroundColor: "rgba(0,0,0,0.0)",
+                    border: "none",
+                    boxShadow: "0px 0px 0px",
+                  }}
+                >
+                  <PlanRangeTooltip type={"moisture"} />
+                </Popup>
+              </Box>
+            }
+            rules={[{ required: true, message: "Enter moisture range" }]}
+          >
+            <Row>
+              <Col>
+                <Form.Item name={["Moisture", "min"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter lowest moisture"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                xs={1}
+              >
+                <i className="fa-solid fa-arrow-right fs-3"></i>
+              </Col>
+              <Col>
+                <Form.Item name={["Moisture", "max"]} noStyle>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Enter highest moisture"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form.Item>
+
+          <hr />
           {/* Irrigation Settings Section */}
           <Form.Item
             label={
@@ -277,6 +505,8 @@ const CreatePlan = () => {
               )}
             </Form.List>
           </Form.Item>
+
+          <hr />
 
           <Form.Item
             label={
@@ -453,235 +683,6 @@ const CreatePlan = () => {
                 </Box>
               )}
             </Form.List>
-          </Form.Item>
-          
-          <hr />
-          
-          {/* Environmental Parameters Section */}
-          <p className="fs-5 fw-bold mt-3 mb-3">Environmental Parameters</p>
-          
-          <Form.Item
-            style={{ marginBottom: "2rem" }}
-            label={
-              <Box className="fs-6">
-                <Popup
-                  trigger={
-                    <Box>
-                      <i
-                        style={{ marginRight: "0.25rem" }}
-                        className="fa-solid fa-temperature-three-quarters"
-                      ></i>
-                      Temperature range (°C)
-                    </Box>
-                  }
-                  on={["hover", "focus"]}
-                  position="right center"
-                  closeOnDocumentClick
-                  contentStyle={{
-                    padding: 0,
-                    backgroundColor: "rgba(0,0,0,0.0)",
-                    border: "none",
-                    boxShadow: "0px 0px 0px",
-                  }}
-                >
-                  <PlanRangeTooltip type={"temperature"} />
-                </Popup>
-              </Box>
-            }
-            rules={[{ required: true, message: "Enter temperature range" }]}
-          >
-            <Row>
-              <Col>
-                <Form.Item name={["Temperature", "min"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter lowest temperature"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                className="d-flex align-items-center justify-content-center"
-                xs={1}
-              >
-                <i className="fa-solid fa-arrow-right fs-3"></i>
-              </Col>
-              <Col>
-                <Form.Item name={["Temperature", "max"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter highest temperature"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form.Item>
-          
-          <Form.Item
-            style={{ marginBottom: "2rem" }}
-            label={
-              <Box className="fs-6">
-                <Popup
-                  trigger={
-                    <Box>
-                      <i
-                        style={{ marginRight: "0.25rem" }}
-                        className="fa-solid fa-sun"
-                      ></i>
-                      Light level range (%)
-                    </Box>
-                  }
-                  on={["hover", "focus"]}
-                  position="right center"
-                  closeOnDocumentClick
-                  contentStyle={{
-                    padding: 0,
-                    backgroundColor: "rgba(0,0,0,0.0)",
-                    border: "none",
-                    boxShadow: "0px 0px 0px",
-                  }}
-                >
-                  <PlanRangeTooltip type={"light"} />
-                </Popup>
-              </Box>
-            }
-            rules={[{ required: true, message: "Enter light level range" }]}
-          >
-            <Row>
-              <Col>
-                <Form.Item name={["Light", "min"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter lowest light level"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                className="d-flex align-items-center justify-content-center"
-                xs={1}
-              >
-                <i className="fa-solid fa-arrow-right fs-3"></i>
-              </Col>
-              <Col>
-                <Form.Item name={["Light", "max"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter highest light level"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form.Item>
-
-          <Form.Item
-            style={{ marginBottom: "2rem" }}
-            label={
-              <Box className="fs-6">
-                <Popup
-                  trigger={
-                    <Box>
-                      <i
-                        style={{ marginRight: "0.25rem" }}
-                        className="fa-solid fa-glass-water"
-                      ></i>
-                      Soil humidity range (ml)
-                    </Box>
-                  }
-                  on={["hover", "focus"]}
-                  position="right center"
-                  closeOnDocumentClick
-                  contentStyle={{
-                    padding: 0,
-                    backgroundColor: "rgba(0,0,0,0.0)",
-                    border: "none",
-                    boxShadow: "0px 0px 0px",
-                  }}
-                >
-                  <PlanRangeTooltip type={"soil humidity"} />
-                </Popup>
-              </Box>
-            }
-            rules={[{ required: true, message: "Enter soil humidity range" }]}
-          >
-            <Row>
-              <Col>
-                <Form.Item name={["SoilHumidity", "min"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter lowest soil humidity"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                className="d-flex align-items-center justify-content-center"
-                xs={1}
-              >
-                <i className="fa-solid fa-arrow-right fs-3"></i>
-              </Col>
-              <Col>
-                <Form.Item name={["SoilHumidity", "max"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter highest soil humidity"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form.Item>
-
-          <Form.Item
-            style={{ marginBottom: "2rem" }}
-            label={
-              <Box className="fs-6">
-                <Popup
-                  trigger={
-                    <Box>
-                      <i
-                        style={{ marginRight: "0.25rem" }}
-                        className="fa-solid fa-droplet"
-                      ></i>
-                      Moisture range (%)
-                    </Box>
-                  }
-                  on={["hover", "focus"]}
-                  position="right center"
-                  closeOnDocumentClick
-                  contentStyle={{
-                    padding: 0,
-                    backgroundColor: "rgba(0,0,0,0.0)",
-                    border: "none",
-                    boxShadow: "0px 0px 0px",
-                  }}
-                >
-                  <PlanRangeTooltip type={"moisture"} />
-                </Popup>
-              </Box>
-            }
-            rules={[{ required: true, message: "Enter moisture range" }]}
-          >
-            <Row>
-              <Col>
-                <Form.Item name={["Moisture", "min"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter lowest moisture"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                className="d-flex align-items-center justify-content-center"
-                xs={1}
-              >
-                <i className="fa-solid fa-arrow-right fs-3"></i>
-              </Col>
-              <Col>
-                <Form.Item name={["Moisture", "max"]} noStyle>
-                  <InputNumber
-                    style={{ width: "100%" }}
-                    placeholder="Enter highest moisture"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
           </Form.Item>
 
           {/* Action Buttons */}

@@ -51,7 +51,7 @@ const PlantNotifications = () => {
     return () => {
       unsubscribe();
     };
-  }, [serialID, initializeFirestore]);
+  }, [serialID]);
 
   const handleMarkAsRead = async () => {
     try {
@@ -108,7 +108,7 @@ const PlantNotifications = () => {
   };
 
   return (
-    <Card style={{ width: "100%", height: "100%" }} className="p-0 m-0">
+    <Card style={{ width: "100%", maxHeight: "73vh", boxShadow: "1px 1px 3px" }} className="p-0 m-0">
       <Card.Header
         style={{ background: "#e6e6e6" }}
         className="d-flex align-items-center flex-wrap"

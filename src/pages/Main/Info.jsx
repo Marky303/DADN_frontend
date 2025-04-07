@@ -80,7 +80,6 @@ const PersonalInfo = () => {
     const successful = await sendRequest(payload, "update_info_user");
     if (successful) {
       setIsEditing(false);
-      window.location.reload(); // Reload the page after saving
     }
   };
 

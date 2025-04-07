@@ -23,7 +23,7 @@ const PlantData = () => {
       <Box
         sx={{
           flexGrow: 1,
-          p: 1,
+          p: 0,
           pt: 2,
           display: "grid",
           gridTemplateColumns: "2fr 1fr"

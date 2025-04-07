@@ -8,8 +8,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import TextField from '@mui/material/TextField'
+import YardIcon from '@mui/icons-material/Yard';
+import TextField from '@mui/material/TextField';
 import theme from "../../theme";
 
 const Plans = () => {
@@ -64,7 +64,7 @@ const Plans = () => {
               variant="h5"
               sx={{ fontWeight: "bold", color: "primary.main" }}
             >
-              <ShoppingCartIcon fontSize="large" /> Your Plans
+              <YardIcon fontSize="large" /> Your Plans
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 2 }}>
@@ -92,7 +92,8 @@ const Plans = () => {
             mt: 2,
             border: "3px solid",
             borderColor: "primary.main",
-            p: 2,
+            borderRadius: "0.375rem",
+            p: 1,
           }}
         >
           <PlanListElement

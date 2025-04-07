@@ -89,7 +89,7 @@ const PlantLight = () => {
         transition: "transform 0.15s ease, box-shadow 0.15s ease",
         cursor: "pointer",
         transform: isHovered ? 'scale(1.03)' : 'scale(1)',
-        boxShadow: isHovered ? '0px 10px 20px rgba(0, 0, 0, 0.2)' : '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        boxShadow: isHovered ? '0px 10px 20px rgba(0, 0, 0, 0.2)' : '1px 1px 3px',
       }}
       className="p-3 px-3"
     >

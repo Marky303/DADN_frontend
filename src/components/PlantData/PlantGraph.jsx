@@ -139,6 +139,7 @@ const PlantGraph = () => {
         borderRadius: "10px",
         marginRight: 15 + "px",
         border: "1px solid #ccc",
+        boxShadow: "1px 1px 3px"
       }}
       className="p-1 pt-3"
     >
@@ -260,7 +261,7 @@ const PlantGraph = () => {
             </>
           )}
 
-          <Line type="monotone" dataKey="Value" stroke="#FF5733" />
+          <Line type="monotone" dataKey="Value" stroke="#FF5733" dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>

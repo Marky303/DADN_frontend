@@ -54,7 +54,7 @@ const PlantInfo = () => {
       </Box>
 
       {/* Graph nằm hàng dưới, chiếm toàn bộ chiều rộng */}
-      <Box sx={{ marginTop: "20px" }}>
+      <Box sx={{ marginTop: "20px", boxShadow: "1px 1px 3px", borderRadius: "0.375rem" }}>
         <PlantGraph />
       </Box>
     </Box>
