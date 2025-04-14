@@ -8,9 +8,7 @@ import { getFirestore } from "firebase/firestore";
 import AuthContext from "./UserauthContext";
 
 import notify from "../functions/toastify/notify";
-import { current } from "@reduxjs/toolkit";
 import Box from "@mui/material/Box";
-import theme from "../theme";
 
 const PlantContext = createContext();
 
