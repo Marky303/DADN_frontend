@@ -1,4 +1,4 @@
-# DADN Frontend
+# Smart Pot Management
 
 ## Introduction 
 
