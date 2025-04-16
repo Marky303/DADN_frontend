@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { Card, Badge, Button } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 
 import Notification from "./Notification";
