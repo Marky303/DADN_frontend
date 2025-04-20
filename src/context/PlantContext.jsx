@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect, useContext, useRef } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { createContext, useState, useContext, useRef } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { initializeApp } from "firebase/app";
@@ -8,6 +8,7 @@ import { getFirestore } from "firebase/firestore";
 import AuthContext from "./UserauthContext";
 
 import notify from "../functions/toastify/notify";
+// import { current } from "@reduxjs/toolkit";
 import Box from "@mui/material/Box";
 
 const PlantContext = createContext();
@@ -17,6 +18,7 @@ export default PlantContext;
 export const PlantProvider = () => {
   // SETUP
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   let { accessToken, logout } = useContext(AuthContext);
 
   // VARIABLES
@@ -140,7 +142,7 @@ export const PlantProvider = () => {
     if (response && response.status == 200) {
       setPlantList(response.data.data);
     } else {
-      throw e;
+      throw new Error('Failed to get plants');
     }
   };
 
@@ -181,7 +183,7 @@ export const PlantProvider = () => {
     if (response && response.status == 200) {
       setPlanList(response.data.data);
     } else {
-      throw e;
+      throw new Error('Failed to get plans');
     }
   };
 
@@ -217,7 +219,7 @@ export const PlantProvider = () => {
       getAllPlans();
       navigate("/plans");
     } else {
-      throw e;
+      throw new Error('Failed to create plan');
     }
   };
 
@@ -240,7 +242,7 @@ export const PlantProvider = () => {
       notify("success", response.data.detail);
       getAllPlans();
     } else {
-      throw e;
+      throw new Error('Failed to delete plan');
     }
   };
 
@@ -262,7 +264,7 @@ export const PlantProvider = () => {
       notify("success", response.data.detail);
       getAllPlans();
     } else {
-      throw e;
+      throw new Error('Failed to copy plan');
     }
   };
 
@@ -299,7 +301,7 @@ export const PlantProvider = () => {
       getAllPlans();
       navigate("/plans");
     } else {
-      throw e;
+      throw new Error('Failed to edit plan');
     }
   };
 
@@ -318,7 +320,7 @@ export const PlantProvider = () => {
       notify("success", response.data.detail);
       getAllPlants();
     } else {
-      throw e;
+      throw new Error('Failed to apply settings');
     }
   };
 
