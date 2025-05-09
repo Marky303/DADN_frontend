@@ -57,7 +57,7 @@ function Dashboard() {
 
   useEffect(() => {
     sendRequest(null, "get_all_plant");
-    sendRequest(null, "get_dashboard");
+    // sendRequest(null, "get_dashboard");
   }, []);
 
   const navigate = useNavigate();
