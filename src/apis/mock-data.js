@@ -71,7 +71,7 @@ export const listPlans = {
       id: 1,
       name: "Plan Before 1",
       type: 'Rose',
-      from: 'April 15th 2025, 9:15:35 pm',
+      time: 'April 15th 2025, 9:15:35 pm',
       to: 'April 15th 2025, 9:15:35 pm',
       plants: [
         { serialID: "BhK1VSycWMuZyEYRhe6N", name: "Test real time" },
@@ -82,7 +82,7 @@ export const listPlans = {
       id: 2,
       name: "Plan Before 2",
       type: 'Rose',
-      from: 'April 15th 2025, 9:15:35 pm',
+      time: 'April 15th 2025, 9:15:35 pm',
       to: 'April 15th 2025, 9:15:35 pm',
       plants: [
         { serialID: "aXU68c15p4qI7jJYyBb7", name: "Smart Plant Pot" },
@@ -93,7 +93,7 @@ export const listPlans = {
       id: 3,
       name: "Plan Before 3",
       type: 'Rose',
-      from: 'April 15th 2025, 9:15:35 pm',
+      time: 'April 15th 2025, 9:15:35 pm',
       to: 'April 15th 2025, 9:15:35 pm',
       plants: [
         { serialID: "BhK1VSycWMuZyEYRhe6N", name: "Test real time" },
@@ -106,7 +106,7 @@ export const listPlans = {
       id: 1,
       name: "Plan After 1",
       type: 'Rose',
-      from: 'April 15th 2025, 9:15:35 pm',
+      time: 'April 15th 2025, 9:15:35 pm',
       to: 'April 15th 2025, 9:15:35 pm',
       plants: [
         { serialID: "BhK1VSycWMuZyEYRhe6N", name: "Test real time" },
@@ -117,7 +117,7 @@ export const listPlans = {
       id: 2,
       name: "Plan After 2",
       type: 'Rose',
-      from: 'April 15th 2025, 9:15:35 pm',
+      time: 'April 15th 2025, 9:15:35 pm',
       to: 'April 15th 2025, 9:15:35 pm',
       plants: [
         { serialID: "aXU68c15p4qI7jJYyBb7", name: "Smart Plant Pot" },
@@ -128,7 +128,7 @@ export const listPlans = {
       id: 3,
       name: "Plan After 3",
       type: 'Rose',
-      from: 'April 15th 2025, 9:15:35 pm',
+      time: 'April 15th 2025, 9:15:35 pm',
       to: 'April 15th 2025, 9:15:35 pm',
       plants: [
         { serialID: "BhK1VSycWMuZyEYRhe6N", name: "Test real time" },

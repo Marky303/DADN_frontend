@@ -7,7 +7,7 @@ import PlantContext from "../../context/PlantContext";
 const PlantRegister = () => {
   const { sendRequest, loading } = useContext(PlantContext);
 
-  useEffect(() => {}, [loading]);
+  useEffect(() => { }, [loading]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,7 +69,7 @@ const PlantRegister = () => {
         />
       </Form.Group>
       <div className="d-flex justify-content-center">
-      <Button variant="contained" sx={{ width:'50%', m: 3}}>Submit</Button>
+        <Button type="submit" variant="contained" sx={{ width: '50%', m: 3 }}>Submit</Button>
       </div>
     </Form>
   );

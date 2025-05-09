@@ -28,6 +28,8 @@ export const PlantProvider = () => {
 
   let [planList, setPlanList] = useState([]);
 
+  let [dashboard, setDashboard] = useState(null);
+
   let [loading, setLoading] = useState(false);
 
   let [chatID, setChatID] = useState(null);
@@ -65,6 +67,9 @@ export const PlantProvider = () => {
           break;
         case "disown_pot":
           await disownPot(e);
+          break;
+        case "get_dashboard":
+          await getDashboard(e);
           break;
         // Chat AI
         case "send_message":
@@ -345,6 +350,25 @@ export const PlantProvider = () => {
     }
   };
 
+  const getDashboard = async (e) => {
+    console.log("loop check");
+
+    const response = await axios.get(
+      import.meta.env.VITE_BACKEND_GETDASHBOARD_ENDPOINT,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    if (response && response.status == 200) {
+      setDashboard(response.data);
+    } else {
+      throw e;
+    }
+  };
+
   const sendMessage = async (e) => {
     let body = {
       query: e
@@ -378,6 +402,7 @@ export const PlantProvider = () => {
     plantList: plantList,
     currentGraph: currentGraph,
     planList: planList,
+    dashboard: dashboard,
     chatID: chatID,
 
     // Functions

@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import PlantContext from "../../context/PlantContext";
 
-import { dataset, unhealthyPlants, listPlans } from "../../apis/mock-data.js";
+// import { dataset, unhealthyPlants, listPlans } from "../../apis/mock-data.js";
 
 const highlightText = (text, searchTerm) => {
   if (!searchTerm) return text;
@@ -42,10 +42,22 @@ function Dashboard() {
   // const handleClose = () => {
   //   setAnchorEl(null);
   // };
-  const { plantList, sendRequest } = useContext(PlantContext);
+  const { plantList, dashboard, sendRequest } = useContext(PlantContext);
+
+  const dataset = (dashboard?.dataset ?? []).map(entry => {
+    const [day, month, year] = entry.date.split('/').map(Number);
+    return {
+      date: new Date(year, month - 1, day),
+      OK: entry.OK,
+      not_OK: entry.not_OK
+    };
+  });
+  const unhealthyPlants = dashboard?.unhealthyPlants ?? [];
+  const listPlans = dashboard?.listPlans ?? { before: [], after: [] };
 
   useEffect(() => {
     sendRequest(null, "get_all_plant");
+    sendRequest(null, "get_dashboard");
   }, []);
 
   const navigate = useNavigate();
@@ -209,7 +221,7 @@ function Dashboard() {
                 }}
                 variant="h5"
               >
-                Plans List
+                Water schedule
               </Typography>
             </Box>
             {/* Content */}
@@ -244,8 +256,7 @@ function Dashboard() {
                     <Typography variant="body2">
                       Plant type: {plan.type}
                     </Typography>
-                    <Typography variant="body2">From: {plan.from}</Typography>
-                    <Typography variant="body2">To: {plan.to}</Typography>
+                    <Typography variant="body2">Time: {plan.time}</Typography>
                     <Box
                       sx={{
                         mt: 2,
@@ -272,13 +283,13 @@ function Dashboard() {
                   flex: "0 0 auto",
                 }}
               >
-                <Box sx={{ 
-                  height: '100%', 
-                  display: 'flex', 
+                <Box sx={{
+                  height: '100%',
+                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Typography 
+                  <Typography
                     sx={{
                       transform: 'rotate(-90deg)',
                       color: 'white',
@@ -307,8 +318,7 @@ function Dashboard() {
                     <Typography variant="body2">
                       Plant type: {plan.type}
                     </Typography>
-                    <Typography variant="body2">From: {plan.from}</Typography>
-                    <Typography variant="body2">To: {plan.to}</Typography>
+                    <Typography variant="body2">Time: {plan.time}</Typography>
                     <Box
                       sx={{
                         mt: 2,
